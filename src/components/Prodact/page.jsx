@@ -1,0 +1,508 @@
+"use client";
+import { div, img } from 'framer-motion/client';
+import React from 'react'
+import Image from 'next/image';
+import { useState } from "react";
+//page from
+
+export default function Product() {
+    const [shadowImage, setShadowImage] = useState(false);
+    
+    const [shadowOverlay, setShadowOverlay] = useState(false);
+
+
+
+
+    const text = "Exprimez Votre Style avec Audace | Hoodies, T-Shirts & Parfums";
+const start = "Start Shopping";
+const text1 = "Product Info";
+const text2 = "Hoodies Blockout Unique "; 
+const text3 = "Style & Edition";
+const text4 = "134.00 Dhs";
+const text5 = "Hoodies Blockout Uniq...";
+const text6 = "Hoodies Blockout Uniq...";
+const text7 = "Delivery";
+const total = "Total";
+const totalnbr = "268.00 Dhs";
+
+  return (
+    <div className="bg-neutral-100 py-24">
+      <div className="max-w-[1512px] mx-auto px-10">
+     
+        
+        <div className="flex gap-8 overflow-x-scroll h-[971px]  pb-4">
+
+          {/* Product 1 */}
+          <div className='w-[467px] h-[598px] flex-shrink-0'>
+            <div className="rounded-xl border text-card-foreground border-none shadow-none bg-transparent">
+              <div className="p-0 relative">
+                <div className="relative h-[598px]">
+                  <img className="w-[467px] h-[598px] rounded-[40px] object-cover" alt="Product 1" src="/prodact/prodact.png" />
+                  <div className="absolute top-[29px] right-[29px]">
+                    <button onClick={() => setShadowImage(!shadowImage)} className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-primary-foreground shadow hover:bg-primary/90 w-[55px] h-[55px] rounded-full bg-white border border-[#dcdcdc] p-0">
+                      <img  onClick={() => setShadowOverlay(!shadowOverlay)} className="w-9 h-[35px]" alt="Favorite" src="prodact/icona.svg" />
+                    </button>
+                    </div>
+
+                 
+                    {shadowImage && (
+                      <div className='fixed inset-0 bg-[#000000]/50 bg-opacity-50 flex items-center justify-center z-50'>
+                        <button onClick={() => setShadowImage(false) } className='absolute rounded-[40px] bg-white w-[80px] h-[80px]  ml-[1200px] mb-[300px]' >exit
+                        </button>
+          <img
+            className="w-[1000px] h-[1000px]"
+            src="/prodact/prodact.png"
+            alt="img"
+          />
+          </div>
+      )}
+
+
+
+
+
+{/* form */}
+
+
+{shadowOverlay && (
+
+
+<div className="fixed inset-0 flex bg-black/50 justify-center items overflow-hidden   z-100">
+        <button
+          onClick={() => setShadowOverlay(false)}
+          className=' absolute  text-white w-[60px] h-[60px] ml-[320px] mt-0 rounded-full'
+        >
+            <img src="/exit.svg" alt="exit" />
+       
+        </button>
+
+
+
+
+
+         <div className='bg-white w-[410px] h-[249px] rounded-[40px] mt-[50px]' >
+
+<h1 
+className='absolute font-bold text-[#141414] ml-[10px] mt-[30px] text-[12px]'
+>{text1}</h1>
+
+
+<button
+className='absolute rounded-full bg-[#2F2F2F] w-[47px] h-[20px] text-white mt-[30px] ml-[90px] text-[10px]'
+>
+Hoodies
+</button>
+
+
+<h1 className='absolute text-[#878787] text-[17px] mt-[50px] ml-[10px]'>
+
+{text2}
+</h1>
+
+<h1 className='absolute text-[#878787] text-[17px] mt-[65px] ml-[10px]'>
+
+{text3}
+
+</h1>
+
+
+<h1 className='absolute font-montreal  text-black text-[27px] ml-[10px]  mt-[90px] '>
+{text4}
+</h1>
+
+
+
+<div className='absolute ml-[20px] mt-[140px] flex gap-1'>
+<button className='rounded-full bg-[#0D0D0D] w-[27px] h-[27px] text-white'>S</button>
+<button className='rounded-full text-[#DDDDDD] w-[30px] h-[27px] white-[#2E2E2E]'>M</button>
+<button className='rounded-full text-[#DDDDDD] w-[26px] h-[27px] white-[#2E2E2E]'>L</button>
+<button className='rounded-full text-[#DDDDDD] w-[35px] h-[27px] white-[#2E2E2E]'>XL</button>
+<button className='rounded-full text-[#DDDDDD] w-[48px] h-[27px] white-[#2E2E2E]'>Over</button>
+</div>
+
+
+
+<div className='absolute ml-[20px] mt-[190px] flex gap-1'>
+<button className='bg-[#464445] rounded-full w-[27px] h-[27px] '></button>
+<button className='bg-[#030303] rounded-full w-[27px] h-[27px]'></button>
+<button className='bg-[#BBBBBB] rounded-full w-[27px] h-[27px] '></button>
+<button className='bg-[#115123] rounded-full w-[27px] h-[27px] '></button>
+<button className='bg-[#6A200C] rounded-full w-[27px] h-[27px] '></button>
+
+</div>
+
+
+
+
+<div className=" absolute ml-[220px] mt-[180px] flex gap-1">
+<button className="rounded-[10px] bg-[#ECECEC] w-[42px] h-[42px]">-</button>
+<button className="rounded-[10px] bg-[#ECECEC] w-[53px] h-[42px]">02</button>
+<button className="rounded-[10px] bg-[#ECECEC] w-[42px] h-[42px]">-</button>
+</div>
+
+
+
+
+
+<img 
+className='ml-[220px] mt-[10px]'
+src="/imgn.svg" alt="n" />
+
+
+
+         </div>
+
+
+
+
+
+         <div className='absolute bg-white w-[410px] h-[148px] rounded-[40px] mt-[300px] '>
+            
+
+
+
+           
+
+           <h1 className='absolute text-[#878787] text-[11px] ml-[10px] mt-[20px] '>
+            {text5}
+           </h1>
+
+
+
+
+           <h1
+           className='absolute text-[#878787] text-[11px] ml-[10px] mt-[45px]'>
+            {text5} 
+           
+           </h1>
+            
+
+            <h1 className='absolute text-[#878787] text-[11px] ml-[10px] mt-[75px] '>
+
+                {text7}
+            </h1>
+
+<h1 className='absolute text-[#878787] text-[11px] ml-[350px] mt-[75px] '>Free</h1>
+
+            <div className="absolute w-[349px] h-0 ml-[10px] mt-[95px] border border-dashed border-[#E3E3E3]"></div>
+
+
+       <h1 className='absolute text-[#363434] text-[11px] ml-[20px] mt-[105px] font-medium  '>
+        {total}
+        </h1>
+
+        <h1 className='absolute text-[#363434] text-[15px] ml-[300px] mt-[100px] font-medium'>
+          {totalnbr}
+        </h1>
+
+
+
+               <div className='absolute mt-[20px] ml-[170px] flex gap-1'> 
+                <button className='bg-[#0D0D0D] rounded-full w-[19px] h-[19px] text-white text-[11px]'>S</button>
+                <button className='bg-[#464445] rounded-full w-[19px] h-[19px] '></button>
+               </div>
+
+               <div className='absolute mt-[40px] ml-[170px] flex gap-1'> 
+                <button className='bg-[#0D0D0D] rounded-full w-[21px] h-[19px] text-white text-[11px]'>XL</button>
+                <button className='bg-[#464445] rounded-full w-[19px] h-[19px] '></button>
+               </div>
+
+
+                <div className='mt-[20px] ml-[240px] '>
+                  <h1 className='absolute text-[#878787] text-[11px]'>01</h1>
+                  <img 
+                  className='absolute ml-[40px]'
+                  src="/laiter.svg" alt="delet" />
+                  <img 
+                  className='absolute ml-[80px]'
+                  src="delet.svg" alt="delet" />
+                  <h1 className='absolute text-[11px] font-medium text-[#878787] ml-[100px]'>134.00</h1>
+                </div>
+                 
+                 
+                   <div className='mt-[40px] ml-[240px] '>
+                  <h1 className='absolute text-[#878787] text-[11px]'>01</h1>
+                    <img 
+                  className='absolute ml-[40px]'
+                  src="/laiter.svg" alt="delet" />
+                  <img 
+                  className='absolute ml-[80px]'
+                  src="delet.svg" alt="delet" />
+                 <h1 className='absolute text-[11px] font-medium text-[#878787] ml-[100px]'>134.00</h1>
+
+                </div>
+
+
+</div>
+
+
+
+         <div className='absolute bg-white w-[410px] h-[326px] rounded-[40px] mt-[450px]' >
+
+          
+
+
+
+
+
+
+<div className="relative">
+
+<div className="mb-6">
+<label className="block font-['PP_Neue_Montreal'] font-medium text-[13px] leading-[16px] text-black mb-1">
+  Full Name
+</label>
+<div className="relative">
+  <input 
+    className="w-full h-[50px] border border-[#ECECEC] rounded-[11px] px-4 font-['PP_Neue_Montreal'] font-medium text-[15px] leading-[18px] text-black"
+    placeholder="Nom Complet"
+  />
+</div>
+</div>
+
+
+<div className="mb-6">
+
+<label className="block font-['PP_Neue_Montreal'] font-medium text-[13px] leading-[16px] text-black mb-1">
+  Full Adresse
+</label>
+<div className="relative">
+  <input 
+    className="w-full h-[50px] border border-[#ECECEC] rounded-[11px] px-4 font-['PP_Neue_Montreal'] font-medium text-[15px] leading-[18px] text-black"
+    placeholder="Ville, Adress"
+  />
+</div>
+</div>
+
+<div className="mb-6">
+
+<label className="block font-['PP_Neue_Montreal'] font-medium text-[13px] leading-[16px] text-black mb-1">
+  Phone Number
+</label>
+<div className="relative">
+  <input 
+    className="w-full h-[50px] border border-[#ECECEC] rounded-[11px] px-4 font-['PP_Neue_Montreal'] font-medium text-[15px] leading-[18px] text-black"
+    placeholder="+212 666-666666"
+  />
+</div>
+</div>
+</div>
+
+<div className='mt-[80px]'>
+<button className='bg-[#161616] w-[259px] h-[70px]  ml-[10px]  rounded-[40px]'></button>
+<button className='bg-[#161616] w-[68px] h-[68px] ml-[1px]  rounded-full' ></button>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+)
+}
+
+
+
+
+
+
+
+                  
+                   
+
+                  <div className="absolute bottom-[25px] top-[490px] left-[25px] flex gap-1">
+                    <button className='absolute bg-white rounded-[40px] w-[74px] h-[74px]'>
+                      <img   className="inline-flex items-center justify-center gap-2 w-[42.43px] h-[42.43px]" alt="Previous" src="/s.svg" />
+                    </button>
+                    <button className='absolute bg-white rounded-[40px] left-[100px] w-[74px] h-[74px]'>
+                      <img className="inline-flex items-center justify-center gap-2 w-[42.43px] h-[42.43px]" alt="Next" src="/m.svg" />
+                    </button>
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="[font-family:'PP_Neue_Montreal-Medium',Helvetica] font-medium text-black text-[32px]">134.00 Dhs</span>
+                        <div className="relative">
+                          <span className="[font-family:'PP_Neue_Montreal-Medium',Helvetica] font-medium text-[#a1a1a1] text-[22px]">199.00 Dhs</span>
+                          <div data-orientation="horizontal" role="none" className="shrink-0 bg-border h-[1px] absolute top-3.5 w-full"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-primary-foreground shadow hover:bg-primary/90 w-[70px] h-[69px] rounded-full bg-[#ffffff42] backdrop-blur-[17px] p-0">
+                      <div className="w-[55px] h-14 bg-white rounded-full border-[0.5px] border-[#dcdcdc] flex items-center justify-center">
+                        <img className="" alt="Cart" src="/prodact/shop.svg" />
+                      </div>
+                    </button>
+                  </div>
+                  <p className='absolute ml-[330px] mt-[5px] text-black text-[32px]'>-43%</p>
+                  <p className="mt-2 [font-family:'PP_Neue_Montreal-Medium',Helvetica] font-medium text-[#868686] text-[27px] leading-normal">Hoodies Blockout Unique <br /> Style & Edition</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Product 2 */}
+          <div className='w-[467px] h-[598px] flex-shrink-0'>
+            <div className="rounded-xl border text-card-foreground border-none shadow-none bg-transparent">
+              <div className="p-0 relative">
+                <div className="relative h-[598px]">
+                  <img className="w-[467px] h-[598px] rounded-[40px] object-cover" alt="Product 1" src="/prodact/prodact.png" />
+
+                  <div className="absolute top-[29px] right-[29px]">
+                    <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-primary-foreground shadow hover:bg-primary/90 w-[55px] h-[55px] rounded-full bg-white border border-[#dcdcdc] p-0">
+                      <img onClick={() => setShadowImage(!shadowImage)}  className="w-9 h-[35px]" alt="Favorite" src="prodact/icona.svg" />
+                    </button>
+                  </div>
+
+                  <div className="absolute bottom-[25px] top-[490px] left-[25px] flex gap-1">
+                    <button className='absolute bg-white rounded-[40px] w-[74px] h-[74px]'>
+                      <img className="inline-flex items-center justify-center gap-2 w-[42.43px] h-[42.43px]" alt="Previous" src="/s.svg" />
+                    </button>
+                    <button className='absolute bg-white rounded-[40px] left-[100px] w-[74px] h-[74px]'>
+                      <img className="inline-flex items-center justify-center gap-2 w-[42.43px] h-[42.43px]" alt="Next" src="/m.svg" />
+                    </button>
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="[font-family:'PP_Neue_Montreal-Medium',Helvetica] font-medium text-black text-[32px]">134.00 Dhs</span>
+                        <div className="relative">
+                          <span className="[font-family:'PP_Neue_Montreal-Medium',Helvetica] font-medium text-[#a1a1a1] text-[22px]">199.00 Dhs</span>
+                          <div data-orientation="horizontal" role="none" className="shrink-0 bg-border h-[1px] absolute top-3.5 w-full"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-primary-foreground shadow hover:bg-primary/90 w-[70px] h-[69px] rounded-full bg-[#ffffff42] backdrop-blur-[17px] p-0">
+                      <div className="w-[55px] h-14 bg-white rounded-full border-[0.5px] border-[#dcdcdc] flex items-center justify-center">
+                        <img className="" alt="Cart" src="/prodact/shop.svg" />
+                      </div>
+                    </button>
+                  </div>
+                  <p className='absolute ml-[330px] mt-[5px] text-black text-[32px]'>-43%</p>
+                  <p className="mt-2 [font-family:'PP_Neue_Montreal-Medium',Helvetica] font-medium text-[#868686] text-[27px] leading-normal">Hoodies Blockout Unique <br /> Style & Edition</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Product 3 */}
+          <div className='w-[467px] h-[598px] flex-shrink-0'>
+            <div className="rounded-xl border text-card-foreground border-none shadow-none bg-transparent">
+              <div className="p-0 relative">
+                <div className="relative h-[598px]">
+                  <img className="w-[467px] h-[598px] rounded-[40px] object-cover" alt="Product 2" src="/prodact/prodact1.png" />
+                  <div className="absolute top-[29px] right-[29px]">
+                    <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-primary-foreground shadow hover:bg-primary/90 w-[55px] h-[55px] rounded-full bg-white border border-[#dcdcdc] p-0">
+                      <img onClick={() => setShadowImage(!shadowImage)}  className="w-9 h-[35px]" alt="Favorite" src="/prodact/icona.svg" />
+                    </button>
+                  </div>
+
+                  <div className="absolute bottom-[25px] top-[490px] left-[25px] flex gap-1">
+                    <button className='absolute bg-white rounded-[40px] w-[74px] h-[74px]'>
+                      <img className="inline-flex items-center justify-center gap-2 w-[42.43px] h-[42.43px]" alt="Previous" src="/prodact/icond.svg" />
+                    </button>
+                    <button className='absolute bg-white rounded-[40px] left-[100px] w-[74px] h-[74px]'>
+                      <img className="inline-flex items-center justify-center gap-2 w-[42.43px] h-[42.43px]" alt="Next" src="/prodact/iconb.svg" />
+                    </button>
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="[font-family:'PP_Neue_Montreal-Medium',Helvetica] font-medium text-black text-[32px]">134.00 Dhs</span>
+                        <div className="relative">
+                          <span className="[font-family:'PP_Neue_Montreal-Medium',Helvetica] font-medium text-[#a1a1a1] text-[22px]">199.00 Dhs</span>
+                          <div data-orientation="horizontal" role="none" className="shrink-0 bg-border h-[1px] absolute top-3.5 w-full"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-primary-foreground shadow hover:bg-primary/90 w-[70px] h-[69px] rounded-full bg-[#ffffff42] backdrop-blur-[17px] p-0">
+                      <div className="w-[55px] h-14 bg-white rounded-full border-[0.5px] border-[#dcdcdc] flex items-center justify-center">
+                        <img className="w-9 h-9" alt="Cart" src="/prodact/shop.svg" />
+                      </div>
+                    </button>
+                  </div>
+                  <p className='absolute ml-[330px] mt-[5px] text-black text-[32px]'>-43%</p>
+                  <p className="mt-2 [font-family:'PP_Neue_Montreal-Medium',Helvetica] font-medium text-[#868686] text-[27px] leading-normal">Hoodies Blockout Unique <br /> Style & Edition</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Product 4 */}
+          <div className='w-[467px] h-[598px] flex-shrink-0'>
+            <div className="rounded-xl border text-card-foreground border-none shadow-none bg-transparent">
+              <div className="p-0 relative">
+                <div className="relative h-[598px]">
+                  <img className="w-[467px] h-[598px] rounded-[40px] object-cover" alt="Product 3" src="/prodact/prodact.png" />
+                  <div className="absolute top-[29px] right-[29px]">
+                    <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-primary-foreground shadow hover:bg-primary/90 w-[55px] h-[55px] rounded-full bg-white border border-[#dcdcdc] p-0">
+                      <img onClick={() => setShadowImage(!shadowImage)}  className="w-9 h-[35px]" alt="Favorite" src="/prodact/icona.svg" />
+                    </button>
+                  </div>
+
+                  <div className="absolute bottom-[25px] top-[490px] left-[25px] flex gap-1">
+                    <button className='absolute bg-white rounded-[40px] w-[74px] h-[74px]'>
+                      <img className="inline-flex items-center justify-center gap-2 w-[42.43px] h-[42.43px]" alt="Previous" src="/prodact/icond.svg" />
+                    </button>
+                    <button className='absolute bg-white rounded-[40px] left-[100px] w-[74px] h-[74px]'>
+                      <img className="inline-flex items-center justify-center gap-2 w-[42.43px] h-[42.43px]" alt="Next" src="/m.svg" />
+                    </button>
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="[font-family:'PP_Neue_Montreal-Medium',Helvetica] font-medium text-black text-[32px]">134.00 Dhs</span>
+                        <div className="relative">
+                          <span className="[font-family:'PP_Neue_Montreal-Medium',Helvetica] font-medium text-[#a1a1a1] text-[22px]">199.00 Dhs</span>
+                          <div data-orientation="horizontal" role="none" className="shrink-0 bg-border h-[1px] absolute top-3.5 w-full"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-primary-foreground shadow hover:bg-primary/90 w-[70px] h-[69px] rounded-full bg-[#ffffff42] backdrop-blur-[17px] p-0">
+                      <div className="w-[55px] h-14 bg-white rounded-full border-[0.5px] border-[#dcdcdc] flex items-center justify-center">
+                        <img onClick={() => setShadowOverlay(!shadowOverlay)}  className="w-9 h-9" alt="Cart" src="/prodact/shop.svg" />
+                      </div>
+                    </button>
+                  </div>
+                  <p className='absolute ml-[330px] mt-[5px] text-black text-[32px]'>-43%</p>
+                  <p className="mt-2 [font-family:'PP_Neue_Montreal-Medium',Helvetica] font-medium text-[#868686] text-[27px] leading-normal">T-Shirt Blockout Unique <br /> Style & Edition</p>
+                </div>
+              </div>
+            </div>
+
+
+
+       
+      
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+      
+  )
+}
