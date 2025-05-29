@@ -9,20 +9,20 @@ const text2 = "Streetwear";
 const text3 = "QUALITY &";
 const text4 = "STYLE REDEFINED";
 
+const text11 = 'text1';
+const text22 = 'text2';
+const text33 = "text3";
 export default function Viduo() {
   return (
 
 
 <div className='mt-[40px] '>
-<h2 
-  className=" ml-[500px] top-[100px] font-['PP_Neue_Montreal-Regular'] font-normal text-black text-[42px] leading-[48px]"
->
-  <span className='ml-[100px]'>The Art Of <br />Streetwear</span>
-  <span className="font-bold  "> QUALITY & <br />
-  <h1 className='ml-[30px]'>STYLE REDEFINED</h1>
-  
-  </span>
-</h2>
+<div className='flex items-center justify-center ' >
+<h1 className='text-black text-[10px] font-bold'>{text11}</h1>
+<h1 className='text-[10px] text-black font-bold '>{text22}</h1>
+<h1 className='text-[10px] text-black font-bold'>{text33}</h1>
+
+</div>
 
 
 <div className="relative">

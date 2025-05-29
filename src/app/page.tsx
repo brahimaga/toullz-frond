@@ -48,7 +48,7 @@ export default function Page() {
 <Testnavber/>
 <Home />
 
-  <h1 className="w-[222px] h-[36px] ml-[600px] font-medium text-[20px] leading-[36px] text-black">
+  <h1 className="flex items-center justify-center font-medium text-[20px] leading-[36px] text-black">
   Offers Right Now
 
   </h1>

@@ -7,16 +7,23 @@ const text2 = "Streetwear";
 const text3 = "QUALITY &";
 const text4 = "STYLE REDEFINED";
 
+
 export default function Viduo() {
   return (
-    <div className='flex flex-col items-center justify-center mt-[40px]'>
-      <h2 className="font-['PP_Neue_Montreal-Regular'] font-normal text-black text-[42px] leading-[48px] text-center">
-        <span>The Art Of <br />Streetwear</span>
-        <span className="font-['PP_Neue_Montreal-Medium'] font-medium block mt-4"> 
-          QUALITY & <br />
-          <span className='ml-[30px]'>STYLE REDEFINED</span>
-        </span>
-      </h2>
+    <div className='mt-[40px] '>
+ <div className="flex items-center justify-center">
+    <h1 className="text-black text-[42px]">{text1}</h1>
+    </div>
+    <div className="flex items-center justify-center">
+
+    <h1 className="text-[42px] text-black ">{text2}</h1>
+
+    <h1 className="text-[42px] text-black font-bold">{text3}</h1>
+    </div>
+    <div className="flex items-center justify-center">
+    <h1 className="text-[42px] text-black font-bold">{text4}</h1>
+    
+</div>
 
       <div className="relative flex flex-col items-center ">
         <div className="relative">
