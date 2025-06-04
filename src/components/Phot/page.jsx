@@ -15,18 +15,16 @@ export default function Phot() {
     offset: ["start start", "end end"]
   });
 
-  // حركة الصور بناءً على التمرير
   const y1 = useTransform(scrollYProgress, [0, 1], [0, -200]);
   const y2 = useTransform(scrollYProgress, [0, 1], [0, -150]);
   const y3 = useTransform(scrollYProgress, [0, 1], [0, -100]);
 
-  // أنيميشن للعناصر عند ظهورها
   const [ref1, inView1] = useInView({ threshold: 0.1, triggerOnce: false });
   const [ref2, inView2] = useInView({ threshold: 0.1, triggerOnce: false });
   const [ref3, inView3] = useInView({ threshold: 0.1, triggerOnce: false });
 
   return (
-    <div ref={containerRef} className='bg-[#252525] mt-[40px] w-full h-[200vh]'>
+    <div ref={containerRef} className='bg-[#252525] mt-[40px] h-[1512px]  w-full '>
 
       <motion.h1 
         initial={{ opacity: 0, y: 50 }}

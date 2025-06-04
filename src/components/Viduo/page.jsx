@@ -34,7 +34,7 @@ export default function Viduo() {
           />
           
           <img 
-            className='w-[1434px] h-[598px] rounded-[40px] object-cover'
+            className='w-[1434px] h-[598px] mt-[40px] rounded-[40px] object-cover'
             src="/viduo/viduo.png" 
             alt="video" 
           />

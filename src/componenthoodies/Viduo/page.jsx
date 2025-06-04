@@ -42,7 +42,7 @@ src="/viduo/play.svg" alt="play" />
 
 </button>
 
-<div className="flex items-center justify-center relative top-[550px] h-[74px] w-full">
+<div className="absolute items-center justify-center  top-[550px] h-[74px] w-full">
   <div className="absolute translate-x-[-40px] bg-white rounded-full w-[74px] h-[74px]">
     <img 
     className=' ml-3 mt-3.5 '

@@ -61,8 +61,8 @@ const t5 = " neque dignissim et amet pulvinar enim.";
 {text2}
       </h1>
 
-      {/* Lorem ipsum paragraph */}
-      <h1 className=" text-[50px] leading-[59px] ml-[200px] text-black  ">
+      <div className='flex items-center justify-center '>
+      <h1 className=" text-[50px] leading-[59px]  text-black  ">
   {t1}
   <br />
 {t2}
@@ -73,7 +73,7 @@ const t5 = " neque dignissim et amet pulvinar enim.";
  <br />
   {t5}
      </h1>
-
+</div>
 
 
 
