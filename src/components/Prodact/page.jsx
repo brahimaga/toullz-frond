@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 export default function Product() {
   const [shadowImage, setShadowImage] = useState(false);
@@ -134,6 +135,44 @@ export default function Product() {
   const text7 = "Delivery";
   const totalText = "Total";
 
+
+
+//from data
+
+  const [formData, setFormData] = useState({
+    fullName: '',
+    address: '',
+    phone: '',
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = () => {
+    if (!formData.fullName || !formData.address || !formData.phone) {
+      alert("3mr lkhanat");
+      return;
+    }
+
+    // إرسال البيانات أو طباعتها
+    console.log('Form Data:', formData);
+    alert(' tamam');
+  };
+
+
+
+
+
+
+
+
+
+
   return (
     <div className="bg-neutral-100 py-24">
       <div className="max-w-[1512px] mx-auto px-10">
@@ -244,7 +283,7 @@ export default function Product() {
       {/* Image zoom modal */}
       {shadowImage && selectedProduct && (
         <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4'>
-          <div className="relative max-w-4xl w-full">
+          <div className="absolute max-w-4xl w-full">
             <button 
               onClick={() => setShadowImage(false)} 
               className='absolute -top-10 right-0 bg-white rounded-full h-10 w-10 flex items-center justify-center text-lg hover:bg-gray-100 transition-colors'
@@ -262,223 +301,244 @@ export default function Product() {
       )}
 
       {/* Product overlay modal */}
-      {shadowOverlay && selectedProduct && (
-        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-[100] p-4">
-          <div className="bg-white rounded-[40px] max-w-4xl w-full overflow-hidden flex flex-col md:flex-row">
-            {/* Left side - Product details */}
-            <div className="p-8 flex-1 relative">
-              <button
-                onClick={() => setShadowOverlay(false)}
-                className="absolute top-4 right-4 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition-colors"
-                aria-label="Close product view"
-              >
-                <img src="/exit.svg" alt="Close" width={20} height={20} />
-              </button>
+{shadowOverlay && selectedProduct && (
+  <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-[100] p-4 overflow-y-auto">
+    <div className="bg-white rounded-[40px]  w-[410px]  mb-[280px] runded-[40px] overflow-hidden flex flex-col">
+      {/* Close button at top */}
+      <button
+        onClick={() => setShadowOverlay(false)}
+        className="absolute top-4 right-4 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition-colors z-10"
+        aria-label="Close product view"
+      >
+        <img src="/exit.svg" alt="Close" width={20} height={20} />
+      </button>
 
-              <div className="flex gap-2 items-center mb-4">
-                <h1 className="font-bold text-[#141414] text-sm">{text1}</h1>
-                <span className="rounded-full bg-[#2F2F2F] px-3 py-1 text-white text-xs">
-                  {selectedProduct.category}
+      {/* Product details section */}
+      <div className="p-3">
+        <div className="flex gap-1 items-center mb-4">
+          <h1 className="font-bold text-[#141414] text-sm">{text1}</h1>
+          <span className="rounded-full bg-[#2F2F2F] px-3 py-1 text-white text-xs">
+            {selectedProduct.category}
+          </span>
+        </div>
+
+        <p className="text-[#878787] text-sm mb-1">
+          {selectedProduct.title} {selectedProduct.subtitle}
+        </p>
+
+        <h2 className="font-montreal text-2xl text-black mb-6">   
+          {selectedProduct.price}
+        </h2>
+
+
+
+
+
+
+
+
+
+        {/* Size Selection */}
+        <div className=" mb-6">
+          <div className="flex flex-wrap gap-2">
+            {['S', 'M', 'L', 'XL', 'Over'].map((size) => (
+              <label key={size} className="cursor-pointer">
+                <input
+                  type="radio"
+                  name="size"
+                  value={size}
+                  className="hidden peer"
+                  checked={selectedSize === size}
+                  onChange={() => setSelectedSize(size)}
+                />
+                <span className="inline-flex items-center justify-center w-[35px] h-[27px] rounded-full border text-[#DDDDDD] border-[#DDDDDD] peer-checked:bg-black peer-checked:text-white peer-checked:border-black text-sm">
+                  {size}
                 </span>
-              </div>
-
-              <p className="text-[#878787] text-sm mb-6">
-                {selectedProduct.title} {selectedProduct.subtitle}
-              </p>
-
-              <h2 className="font-montreal text-2xl text-black mb-6">   
-                {selectedProduct.price}
-              </h2>
-
-              {/* Size Selection */}
-              <div className="mb-6">
-                <h3 className="text-sm font-medium mb-2">Size</h3>
-                <div className="flex flex-wrap gap-2">
-                  {['S', 'M', 'L', 'XL', 'Over'].map((size) => (
-                    <label key={size} className="cursor-pointer">
-                      <input
-                        type="radio"
-                        name="size"
-                        value={size}
-                        className="hidden peer"
-                        checked={selectedSize === size}
-                        onChange={() => setSelectedSize(size)}
-                      />
-                      <span className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-[#DDDDDD] peer-checked:bg-black peer-checked:text-white peer-checked:border-black text-sm">
-                        {size}
-                      </span>
-                    </label>
-                  ))} 
-                </div>
-              </div>
-
-              {/* Color Selection */}
-              <div className="mb-6">
-                <h3 className="text-sm font-medium mb-2">Color</h3>
-                <div className="flex flex-wrap gap-3">
-                  {[
-                    { value: 'bg-red-100', label: 'Red' },
-                    { value: 'bg-[#030303]', label: 'Black' },
-                    { value: 'bg-[#BBBBBB]', label: 'Gray' },
-                    { value: 'bg-[#115123]', label: 'Green' },
-                    { value: 'bg-[#6A200C]', label: 'Brown' },
-                  ].map((color) => (
-                    <label key={color.value} className="cursor-pointer">
-                      <input
-                        type="radio"  
-                        name="color"
-                        value={color.value}
-                        className="hidden peer"
-                        checked={selectedColor === color.value}
-                        onChange={() => setSelectedColor(color.value)}
-                      />
-                      <span
-                        className={`${color.value} w-8 h-8 rounded-full inline-flex items-center justify-center`}
-                        aria-label={color.label}
-                      >
-                        <span className="w-3 h-3 rounded-full bg-white opacity-0 peer-checked:opacity-100"></span>
-                      </span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Quantity Controls */}
-              <div className="mb-8">
-                <h3 className="text-sm font-medium mb-2">Quantity</h3>
-                <div className="flex gap-2">
-                  <button
-                    className="rounded-lg bg-[#ECECEC] w-10 h-10 flex items-center justify-center hover:bg-gray-200 transition-colors"
-                    onClick={() => setCount((prev) => Math.max(1, prev - 1))}
-                    aria-label="Decrease quantity"
-                  >
-                    -
-                  </button>
-                  <div className="rounded-lg bg-[#ECECEC] w-14 h-10 flex items-center justify-center">
-                    {count.toString().padStart(2, '0')}
-                  </div>
-                  <button
-                    className="rounded-lg bg-[#ECECEC] w-10 h-10 flex items-center justify-center hover:bg-gray-200 transition-colors"
-                    onClick={() => setCount((prev) => prev + 1)}
-                    aria-label="Increase quantity"
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-
-              <button 
-                onClick={handleAddToCart}
-                className="w-full bg-black text-white py-4 rounded-[40px] hover:bg-gray-800 transition-colors"
-              >
-                Add to Cart
-              </button>
-            </div>
-
-            {/* Right side - Cart summary */}
-            <div className="bg-gray-50 p-8 w-full md:w-96 border-l border-gray-200">
-              <h3 className="text-lg font-medium mb-6">Your Cart</h3>
-              
-              <div className="space-y-4 max-h-64 overflow-y-auto mb-6">
-                {items.map((item) => (
-                  <div key={item.id} className="flex justify-between items-center pb-3 border-b border-gray-200">
-                    <div className="flex items-center gap-2">
-                      <span className="bg-[#0D0D0D] rounded-full w-5 h-5 text-white text-xs flex items-center justify-center">
-                        {item.size}
-                      </span>
-                      <span className={`${item.colorClass} rounded-full w-5 h-5`}></span>
-                      <span className="text-sm">{item.name}</span>
-                    </div>
-                    
-                    <div className="flex items-center gap-3">
-                      <span className="text-[#878787] text-xs">
-                        {item.quantity.toString().padStart(2, '0')}
-                      </span>
-                      <span className="text-xs font-medium text-[#878787]">
-                        {item.price.toFixed(2)} Dhs
-                      </span>
-                      <button 
-                        onClick={() => handleDelete(item.id)}
-                        className="text-[#878787] hover:text-red-500"
-                        aria-label="Remove item"
-                      >
-                        <img src="/delet.svg" alt="Delete item" className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="border-t border-gray-200 pt-4 mb-6">
-                <div className="flex justify-between mb-2">
-                  <span className="text-sm">{text7}</span>
-                  <span className="text-sm">Free</span>
-                </div>
-                <div className="flex justify-between font-medium">
-                  <span>{totalText}</span>
-                  <span>{total} Dhs</span>
-                </div>
-              </div>
-
-              <button className="w-full bg-black text-white py-4 rounded-[40px] hover:bg-gray-800 transition-colors">
-                Checkout
-              </button>
-            </div>
+              </label>
+            ))} 
           </div>
-        
+        </div>
 
 
 
 
-
-
-<div className='bg-white flex items-center mr-[190px]  w-[410px] h-[326px] rounded-[40px]'>
-<div className="mt-4 ml-[30px]">
-  <div className="mb-4">
-    <label className="block font-medium text-sm text-black mb-1">
-      Full Name
-    </label>
-    <input 
-      className="w-[352px] h-[50px] border border-[#ECECEC] rounded-lg px-4 text-sm"
-      placeholder="Nom Complet"
-    />
-  </div>
-
-  <div className="mb-4">
-    <label className="block font-medium text-sm text-black mb-1">
-      Full Address
-    </label>
-    <input 
-      className="w-[352px] h-[50px] border border-[#ECECEC] rounded-lg px-4 text-sm"
-      placeholder="Ville, Adress"
-    />
-  </div>
-
-  <div className="mb-6">
-    <label className="block font-medium text-sm text-black mb-1">
-      Phone Number
-    </label>
-    <input 
-      className="w-[352px] h-[50px] border border-[#ECECEC] rounded-lg px-4 text-sm"
-      placeholder="+212 666-666666"
-    />
-  </div>
-
-  <div className="flex items-center justify-between gap-4">
-    <button 
      
-      className="flex-1 bg-[#161616] h-14 text-white rounded-[40px] flex items-center justify-center gap-2 hover:bg-[#333] transition-colors"
-    >
-      <span>Acheter Maintenant</span>
-    </button>
-    <button className="bg-white w-14 h-14 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors">
-      <img src="/lin.svg" alt="Alternative payment" className="w-6 h-6" />
-    </button>
-  </div>
-</div>
-</div>
-</div>
-      )}
+
+        {/* Color Selection */}
+        <div className="mb-6">
+          <div className="flex flex-wrap gap-3">
+            {[
+              { value: 'bg-red-100', label: 'Red' },
+              { value: 'bg-[#030303]', label: 'Black' },
+              { value: 'bg-[#BBBBBB]', label: 'Gray' },
+              { value: 'bg-[#115123]', label: 'Green' },
+              { value: 'bg-[#6A200C]', label: 'Brown' },
+            ].map((color) => (
+              <label key={color.value} className="cursor-pointer">
+                <input
+                  type="radio"  
+                  name="color"
+                  value={color.value}
+                  className="hidden peer"
+                  checked={selectedColor === color.value}
+                  onChange={() => setSelectedColor(color.value)}
+                />
+                <span
+                  className={`${color.value} w-8 h-8 rounded-full inline-flex items-center justify-center`}
+                  aria-label={color.label}
+                >
+                  <span className="w-3 h-3 rounded-[40px]   bg-white opacity-0 peer-checked:opacity-100"></span>
+                </span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Quantity Controls */}
+        <div className="  ">
+          <div className="flex ml-[240px] gap-1">
+            <button
+              className="rounded-lg bg-[#ECECEC] w-10 h-10 flex items-center justify-center hover:bg-gray-200 transition-colors"
+              onClick={() => setCount((prev) => Math.max(1, prev - 1))}
+              aria-label="Decrease quantity"
+            >
+              -
+            </button>
+            <div className="rounded-lg bg-[#ECECEC] w-14 h-10 flex items-center justify-center">
+              {count.toString().padStart(2, '0')}
+            </div>
+            <button
+              className="rounded-lg bg-[#ECECEC] w-10 h-10 flex items-center justify-center hover:bg-gray-200 transition-colors"
+              onClick={() => setCount((prev) => prev + 1)}
+              aria-label="Increase quantity"
+            >
+              +
+            </button>
+          </div>
+        </div>
+
+        <button 
+          onClick={handleAddToCart}
+          className="w-full bg-black text-white py-4 rounded-[40px] hover:bg-gray-800 transition-colors mb-8"
+        >
+          Add to Cart
+        </button>
+      </div>
+      </div>
+
+
+
+
+      {/* Cart summary section */}
+      <div className="absolute mt-[290px] h-[184px] w-[410px] rounded-[40px] bg-white p-8 border-t border-gray-200">
+  <div className="space-y-4 max-h-[60px] overflow-y-auto mb-6">
+    {items.map((item) => (
+      <div key={item.id} className="flex justify-between items-center pb-0.5 ">
+        <div className="flex items-center gap-1">
+          <span className="bg-[#0D0D0D] rounded-full w-5 h-5 text-white text-xs flex items-center justify-center">
+            {item.size}
+          </span>
+          <span className={`${item.colorClass} rounded-full w-5 h-5`}></span>
+          <span className="text-sm">{item.name}</span>
+        </div>
+        
+        <div className="flex items-center gap-3">
+          <span className="text-[#878787] text-xs">
+            {item.quantity.toString().padStart(2, '0')}
+          </span>
+          <span className="text-xs font-medium text-[#878787]">
+            {item.price.toFixed(2)} Dhs
+          </span>
+          <button 
+            onClick={() => handleDelete(item.id)}
+            className="text-[#878787] hover:text-red-500"
+            aria-label="Remove item"
+          >
+            <img src="/delet.svg" alt="Delete item" className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+    ))}
+ 
+          
+        </div>
+
+        
+          <div className="flex justify-between mb-2">
+            <span className="text-sm">{text7}</span>
+            <span className="text-sm">Free</span>
+          </div>
+          <div className="flex justify-between font-medium">
+            <span>{totalText}</span>
+            <span>{total} Dhs</span>
+          </div>
+
+       
+      </div>
+
+
+
+
+
+      {/* Checkout form section */}
+      
+      <div className='absolute bg-white p-8 mt-[810px] w-[410px] h-[326px] rounded-[40px] border-t border-gray-200'>
+        <div className="mb-4">
+          <label className="block font-medium text-sm text-black mb-1">
+            Full Name
+          </label>
+          <input 
+              name="fullName"
+            className="w-full h-[50px] border border-[#ECECEC] rounded-lg px-4 text-sm"
+            placeholder="Nom Complet"
+            value={formData.fullName}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block font-medium text-sm text-black mb-1">
+            Full Address
+          </label>
+          <input 
+                    name="address"
+
+            className="w-full h-[50px] border border-[#ECECEC] rounded-lg px-4 text-sm"
+            placeholder="Ville, Adresse"
+            value={formData.address}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="mb-6">
+          <label className="block font-medium text-sm text-black mb-1">
+            Phone Number
+          </label>
+          <input 
+                    name="phone"
+
+            className="w-full h-[50px] border border-[#ECECEC] rounded-lg px-4 text-sm"
+            placeholder="+212 666-666666"
+            value={formData.phone}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="flex items-center justify-between gap-4">
+          <button 
+                    onClick={handleSubmit}
+
+            className="flex-1 bg-[#161616]  h-14 mt-[20px] text-white rounded-[40px] flex items-center justify-center gap-1 hover:bg-[#333] transition-colors"
+          >
+            <span>Acheter Maintenant</span>
+          </button>
+          <button className="bg-black w-[68px] h-[68px] rounded-full mt-[20px] flex items-center justify-center hover:bg-gray-50 transition-colors">
+            <img src="/lin.svg" alt="Alternative payment" className="w-6 h-6" />
+          </button>
+        </div>
+      </div>
+      </div>
+)}
     </div>
   );
 }
