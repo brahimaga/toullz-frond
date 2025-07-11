@@ -1,16 +1,16 @@
 import React from 'react'
 import Home from "@/app/home/page";
 //import { div, main } from 'motion/react-client';
-import Prodact from "@/components/Prodact/page";
-import Viduo from "@/components/Viduo/page";
-import Phot from "@/components/Phot/page";
+import Prodact from "@/componenttshirts/Prodact/page";
+import Viduo from "@/componenttshirts/Viduo/page";
+import Phot from "@/componenttshirts/Phot/page";
 import Homem from "@/componentsmobile/Homem/page";
-import Prodact2 from "@/components/Prodact2/page";
-import Phot2 from "@/components/Phot2/page";
-import Prodact3 from "@/components/Prodact3/page";
-import Phot3 from "@/components/Phot3/page";
-import Footer from "@/components/Footer/page";
-import Text from '@/components/Text/page';
+import Prodact2 from "@/componenttshirts/Prodact2/page";
+import Phot2 from "@/componenttshirts/Phot2/page";
+import Prodact3 from "@/componenttshirts/Prodact3/page";
+import Phot3 from "@/componenttshirts/Phot3/page";
+import Footer from "@/componenttshirts/Footer/page";
+import Text from '@/componenttshirts/Text/page';
 import Testnavber from "@/components/Testnavber/page";
 import Prodactm from '@/componentsmobile/Prodactm/page';
 import Viduom from "@/componentsmobile/Viduom/page";
@@ -45,7 +45,7 @@ export default function Page() {
 
 
 <div className='md:block hidden'>
-<Testnavber/>
+  <Testnavber />
 <Home />
 
   <h1 className="flex items-center justify-center font-medium text-[20px] leading-[36px] text-black">

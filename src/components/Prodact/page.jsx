@@ -12,8 +12,8 @@ export default function Product() {
 
   // Cart items state
   const [items, setItems] = useState([
-    { id: 1, name: "Item One", size: "S", colorClass: "bg-[#464445]", quantity: 1, price: 134.00 },
-    { id: 2, name: "Item Two", size: "M", colorClass: "bg-[#030303]", quantity: 1, price: 134.00 },
+    { id: 1, name: "T-Shirt Blockout Unique", size: "S", colorClass: "bg-[#464445]", quantity: 1, price: 134.00 },
+    { id: 2, name: "T-Shirt Blockout Unique", size: "M", colorClass: "bg-[#030303]", quantity: 1, price: 134.00 },
   ]);
 
   // Products data
@@ -140,9 +140,9 @@ export default function Product() {
 //from data
 
   const [formData, setFormData] = useState({
-    fullName: '',
-    address: '',
-    phone: '',
+    fullName: 'name',
+    address: 'address',
+    phone: 'phone',
   });
 
   const handleChange = (e) => {
@@ -159,7 +159,6 @@ export default function Product() {
       return;
     }
 
-    // إرسال البيانات أو طباعتها
     console.log('Form Data:', formData);
     alert(' tamam');
   };
@@ -175,8 +174,8 @@ export default function Product() {
 
   return (
     <div className="bg-neutral-100 py-24">
-      <div className="max-w-[1512px] mx-auto px-10">
-        <div className="flex gap-8 overflow-x-scroll pb-4 custom-scrollbar">
+      <div className="max-w-[1512px] mx-auto  px-10">
+        <div className="flex gap-8 overflow-x-scroll pb-[200px] custom-scrollbar">
           {products.map((product) => (
             <div key={product.id} className='w-[467px] h-[598px] flex-shrink-0'>
               <div className="rounded-xl bg-transparent">
@@ -233,7 +232,7 @@ export default function Product() {
                           className="w-[42px] h-[42px]" 
                           alt="Next" 
                           src="/m.svg" 
-                        />
+                        />  
                       </button>
                     </div>
                   </div>
@@ -302,31 +301,41 @@ export default function Product() {
 
       {/* Product overlay modal */}
 {shadowOverlay && selectedProduct && (
+
   <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-[100] p-4 overflow-y-auto">
-    <div className="bg-white rounded-[40px]  w-[410px]  mb-[280px] runded-[40px] overflow-hidden flex flex-col">
-      {/* Close button at top */}
-      <button
+        <img 
+          onClick={() => setShadowOverlay(false)}
+        aria-label="Close product view"
+        className='ml-[400px] mb-[730px] ' src="/exit.svg" alt="Close" width={34} height={34} />
+
+  {  /*     <button
+      className='absolute '
         onClick={() => setShadowOverlay(false)}
-        className="absolute top-4 right-4 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition-colors z-10"
         aria-label="Close product view"
       >
-        <img src="/exit.svg" alt="Close" width={20} height={20} />
-      </button>
+        <img className='absolute mt-[30px] ' src="/exit.svg" alt="Close" width={34} height={34} />
+      </button> */  }
+
+
+    <div className="bg-white absolute rounded-[40px]  w-[410px]  mb-[280px] runded-[40px] overflow-hidden flex flex-col">
+
 
       {/* Product details section */}
       <div className="p-3">
         <div className="flex gap-1 items-center mb-4">
-          <h1 className="font-bold text-[#141414] text-sm">{text1}</h1>
-          <span className="rounded-full bg-[#2F2F2F] px-3 py-1 text-white text-xs">
+          <h1 className="font-bold text-[#141414] text-[12px]">{text1}</h1>
+          <span className="rounded-full bg-[#2F2F2F] text-[10px] px-3 py-1 text-white ">
+          <img className='absolute ml-[140px] w-[140px] h-[140px]' src={selectedProduct.images[currentImageIndices[selectedProduct.id]]} alt="" />
+       
             {selectedProduct.category}
           </span>
         </div>
 
-        <p className="text-[#878787] text-sm mb-1">
-          {selectedProduct.title} {selectedProduct.subtitle}
+        <p className="text-[#878787] text-[17px] mb-1">
+          {selectedProduct.title} <br /> {selectedProduct.subtitle}
         </p>
 
-        <h2 className="font-montreal text-2xl text-black mb-6">   
+        <h2 className="font-montreal text-[27px] text-black mb-6">   
           {selectedProduct.price}
         </h2>
 
@@ -340,7 +349,7 @@ export default function Product() {
 
         {/* Size Selection */}
         <div className=" mb-6">
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-3">
             {['S', 'M', 'L', 'XL', 'Over'].map((size) => (
               <label key={size} className="cursor-pointer">
                 <input
@@ -366,7 +375,7 @@ export default function Product() {
 
         {/* Color Selection */}
         <div className="mb-6">
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-4">
             {[
               { value: 'bg-red-100', label: 'Red' },
               { value: 'bg-[#030303]', label: 'Black' },
@@ -383,12 +392,13 @@ export default function Product() {
                   checked={selectedColor === color.value}
                   onChange={() => setSelectedColor(color.value)}
                 />
-                <span
-                  className={`${color.value} w-8 h-8 rounded-full inline-flex items-center justify-center`}
-                  aria-label={color.label}
-                >
-                  <span className="w-3 h-3 rounded-[40px]   bg-white opacity-0 peer-checked:opacity-100"></span>
-                </span>
+             <span
+  className={`${color.value} w-8 h-8 rounded-full inline-flex items-center justify-center ring-2 ring-transparent peer-checked:ring-black`}
+  aria-label={color.label}
+>
+  <span className="w-3 h-3 rounded-full bg-white opacity-0"></span>
+</span>
+
               </label>
             ))}
           </div>
@@ -430,16 +440,20 @@ export default function Product() {
 
 
       {/* Cart summary section */}
-      <div className="absolute mt-[290px] h-[184px] w-[410px] rounded-[40px] bg-white p-8 border-t border-gray-200">
+      <div className="absolute mt-[325px] h-[184px] w-[410px] rounded-[40px] bg-white p-8 border-t border-gray-200">
   <div className="space-y-4 max-h-[60px] overflow-y-auto mb-6">
     {items.map((item) => (
       <div key={item.id} className="flex justify-between items-center pb-0.5 ">
         <div className="flex items-center gap-1">
+        <span className="text-sm text-[#DDDDDD]">{item.name}</span>
+        <span>
+           </span>
+
           <span className="bg-[#0D0D0D] rounded-full w-5 h-5 text-white text-xs flex items-center justify-center">
             {item.size}
           </span>
+
           <span className={`${item.colorClass} rounded-full w-5 h-5`}></span>
-          <span className="text-sm">{item.name}</span>
         </div>
         
         <div className="flex items-center gap-3">
@@ -482,7 +496,7 @@ export default function Product() {
 
       {/* Checkout form section */}
       
-      <div className='absolute bg-white p-8 mt-[810px] w-[410px] h-[326px] rounded-[40px] border-t border-gray-200'>
+      <div className='absolute bg-white p-8 mt-[839px] w-[410px] h-[326px] rounded-[40px] border-t border-gray-200'>
         <div className="mb-4">
           <label className="block font-medium text-sm text-black mb-1">
             Full Name
@@ -528,11 +542,11 @@ export default function Product() {
           <button 
                     onClick={handleSubmit}
 
-            className="flex-1 bg-[#161616]  h-14 mt-[20px] text-white rounded-[40px] flex items-center justify-center gap-1 hover:bg-[#333] transition-colors"
+            className="flex-1 bg-[#161616]   w-[259px] h-[70px] mt-[20px] text-white rounded-[40px]  hover:bg-[#333] transition-colors"
           >
             <span>Acheter Maintenant</span>
           </button>
-          <button className="bg-black w-[68px] h-[68px] rounded-full mt-[20px] flex items-center justify-center hover:bg-gray-50 transition-colors">
+          <button className="absolute bg-black w-[68px] h-[68px] ml-[347px] rounded-full mt-[20px]  hover:bg-gray-50 transition-colors">
             <img src="/lin.svg" alt="Alternative payment" className="w-6 h-6" />
           </button>
         </div>

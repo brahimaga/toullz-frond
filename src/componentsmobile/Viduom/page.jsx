@@ -44,11 +44,10 @@ className='text-black ml-[100px] '
 
 
 
-
   
 
   
-    <div className='flex items-center justify-items-center'>
+    <div className='flex items-center justify-center'>
 
        
 
@@ -63,7 +62,7 @@ className='text-black ml-[100px] '
 <div className=" absolute flex items-center justify-center  mt-[450px]  h-[51.56px] w-full">
   <div className="absolute translate-x-[-40px] bg-white rounded-full w-[51.56px] h-[51.56px]">
     <img 
-    className=' ml-3 mt-3.5 '
+    className=' inline-flex items-center justify-center '
     src="/s.svg" alt="s" />
   </div>
 
@@ -71,7 +70,7 @@ className='text-black ml-[100px] '
   <div className="absolute translate-x-[40px] bg-white rounded-full w-[51.56px] h-[51.56px]">
 
     <img 
-    className=' ml-3 mt-3.5 '
+    className=' inline-flex items-center justify-center '
     src="m.svg" alt="m" />
   </div>
 </div>
@@ -88,7 +87,7 @@ className='text-black ml-[100px] '
 
 
         <img 
-        className='absolute ml-[150px]'
+        className='absolute inline-flex items-center justify-center'
         src="play.svg" alt="play" />
 
         <img 

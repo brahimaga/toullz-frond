@@ -15,7 +15,7 @@ export default function Viduo() {
 
 <div className='mt-[40px] '>
 <h2 
-  className=" ml-[500px] top-[100px] font-['PP_Neue_Montreal-Regular'] font-normal text-black text-[42px] leading-[48px]"
+  className=" flex items-center justify-center  top-[100px] font-['PP_Neue_Montreal-Regular'] font-normal text-black text-[42px] leading-[48px]"
 >
   <span className='ml-[100px]'>The Art Of <br />Streetwear</span>
   <span className="font-['PP_Neue_Montreal-Medium'] font-medium "> QUALITY & <br />
@@ -50,15 +50,11 @@ src="/viduo/play.svg" alt="play" />
 
 
 
-
-
 <img 
-className='p-2 mt-[40px] w-[1434px] h-[598] rounded-[40px]'
+className='p-2 mt-[40px]  items-center justify-center w-[1434px] h-[598px] rounded-[40px]'
 src="/hoodies/viduo/viduo.png" alt="vido" />
 
-
 </div>
-
 </div>
 
 
