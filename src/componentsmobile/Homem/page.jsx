@@ -52,6 +52,9 @@ export default function Home() {
         {/* Navigation Buttons */}
         <div className="absolute top-[60px] left-[30px] flex gap-[10px] z-10">
           <button className="w-[51.56px] h-[51.56px] bg-white rounded-full flex items-center justify-center">
+          
+
+
             <Image 
               src="/home/mobile/iconb.svg" 
               alt="Menu" 
@@ -70,18 +73,18 @@ export default function Home() {
         </div>
 
         {/* Logo */}
-        <div className="absolute top-[70px] right-[20px]">
+        {/* <div className="absolute top-[70px] right-[20px]">
           <Image 
-            src="/home/mobile/logo.svg" 
+            src="/home/mobile/logo1.svg" 
             alt="Logo" 
             width={54} 
             height={16}
           />
-        </div>
+        </div> */}
 
         {/* Hero Image */}
         <Image
-          src="/home/mobile/back.jpg"
+          src="/home/mobile/bg.jpg"
           alt="Featured Product"
           width={410}
           height={782}
@@ -109,6 +112,8 @@ export default function Home() {
               height={30}
             />
           </button>
+
+      
         </div>
       </div>
 

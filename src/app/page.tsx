@@ -1,6 +1,5 @@
-import React from 'react'
+import React from 'react';
 import Home from "@/app/home/page";
-//import { div, main } from 'motion/react-client';
 import Prodact from "@/componenttshirts/Prodact/page";
 import Viduo from "@/componenttshirts/Viduo/page";
 import Phot from "@/componenttshirts/Phot/page";
@@ -14,62 +13,52 @@ import Text from '@/componenttshirts/Text/page';
 import Testnavber from "@/components/Testnavber/page";
 import Prodactm from '@/componentsmobile/Prodactm/page';
 import Viduom from "@/componentsmobile/Viduom/page";
-import Photm from  "@/componentsmobile/Photm/page";
+import Photm from "@/componentsmobile/Photm/page";
+import Footerm from "@/componentsmobile/Footerm/page" ;
+
+function MobileView() {
+  return (
+    <div className='md:hidden block'>
+      <Homem />
+      <Prodactm />
+      <Viduom />
+      <Photm />
+      <Footerm />
+    </div>  
+  );
+}
+
+function DesktopView() {
+  return (
+    <div className='md:block hidden'>
+      <Testnavber />
+      <Home />
+
+      <h1 className="flex items-center justify-center font-medium text-[20px] leading-[36px] text-black">
+        Offers Right Now
+      </h1>
+
+      <Prodact />
+      <Prodact />
+      <Viduo />
+      <Phot />
+      <Prodact2 />
+      <Phot2 />
+      <Prodact3 />
+      <Phot3 />
+      <Text />
+      <div className='mt-[100px]'>
+        <Footer />
+      </div>
+    </div>
+  );
+}
 
 export default function Page() {
   return (
-    
-
-
-
-
-
-
-
-
-
-<main>
-
-<div className='md:hidden block'>
-
-<Homem />
-<Prodactm />
-<Viduom />
-<Photm />
-
-</div> 
-
-
-
-
-
-
-<div className='md:block hidden'>
-  <Testnavber />
-<Home />
-
-  <h1 className="flex items-center justify-center font-medium text-[20px] leading-[36px] text-black">
-  Offers Right Now
-
-  </h1>
-
-
-  <Prodact />
-<Viduo />
-
-<Phot />
-<Prodact2 />
-<Phot2 />
-<Prodact3/>
-<Phot3 />
-<Text />
-<div className='mt-[100px]'>
-<Footer/>
-</div>
-</div>
-</main>
-
-
-  )
+    <main>
+      <MobileView />
+      <DesktopView />
+    </main>
+  );
 }
-

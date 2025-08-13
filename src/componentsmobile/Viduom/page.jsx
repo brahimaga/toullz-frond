@@ -1,101 +1,79 @@
-import { div } from 'framer-motion/client'
-import { h1 } from 'framer-motion/m'
-import React from 'react'
-//import Vid from "@/componentsmobile/Viduom/Vid"
+'use client';
+
+import React, { useRef, useState } from 'react';
+import Image from 'next/image';
 
 export default function Viduom() {
+  const text1 = "The Art Of";
+  const text2 = "Streetwear QUALITY &";
+  const text3 = "STYLE REDEFINED";
 
-    const text1 = " The Art Of ";
-    const text2= "Streetwear QUALITY &";
-    const text3 = " STYLE REDEFINED";
-
-
-  return (
-<div className='p-1'>
-
-<h1 
-className='text-black text-[23px] ml-[130px] font-[PP_Neue_Montreal]  '
-> {text1}</h1>
-
-<h1 
-className='text-black text-[23px] ml-[60px] '
-
->
-
-    {text2}
-
-</h1>
-
-<h1
-className='text-black ml-[100px] '
->
-
-{text3}
-
-</h1>
-
-
-
-
-
-
-
-
-
-
-
+  const HeroSection = () => {
+    const videoRef = useRef(null);
+    const [isPlaying, setIsPlaying] = useState(false);
   
+    const handlePlay = () => {
+      if (videoRef.current) {
+        videoRef.current.play();
+        setIsPlaying(true);
+      }
+    };
 
-  
-    <div className='flex items-center justify-center'>
+    return (
+      <div className='p-1 relative'>
+        {/* Text Content */}
+        <div className='text-center mb-8'>
+          <h1 className='text-black text-[23px] font-[PP_Neue_Montreal]'>
+            {text1}
+          </h1>
+          <h1 className='text-black text-[23px]'>
+            {text2}
+          </h1>
+          <h1 className='text-black text-[23px]'>
+            {text3}
+          </h1>
+        </div>
 
-       
+        {/* Video Container */}
+        <div className='flex items-center justify-center relative'>
+          <video
+            src="/video.mp4"
+           //. controls
+            ref={videoRef}
+            muted
+            playsInline
+            loop
+            className='w-full rounded-[200px] max-w-[394px] h-[606px] object-cover'
+          />
+        
+          {!isPlaying && ( 
+            <div
+              onClick={handlePlay}
+              className='absolute cursor-pointer'
+            >
+              <Image
+                src="/play.svg" 
+                alt="Play button" 
+                width={50} // You need to specify width and height for Next.js Image
+                height={50}
+              />
+            </div>
+          )}
+        </div>
 
+        {/* Social Icons */}
+        <div className="absolute bottom-10 left-0 right-0 flex justify-center gap-20">
+          <div className="bg-white rounded-full w-[51.56px] h-[51.56px] flex items-center justify-center">
+            <img src="/s.svg" alt="Social media icon" />
+          </div>
+          <div className="bg-white rounded-full w-[51.56px] h-[51.56px] flex items-center justify-center">
+            <img src="/m.svg" alt="Messaging icon" />
+          </div>
+        </div>
+      </div>
+    );
+  };
 
-
-
-
-
-
-
-
-<div className=" absolute flex items-center justify-center  mt-[450px]  h-[51.56px] w-full">
-  <div className="absolute translate-x-[-40px] bg-white rounded-full w-[51.56px] h-[51.56px]">
-    <img 
-    className=' inline-flex items-center justify-center '
-    src="/s.svg" alt="s" />
-  </div>
-
-
-  <div className="absolute translate-x-[40px] bg-white rounded-full w-[51.56px] h-[51.56px]">
-
-    <img 
-    className=' inline-flex items-center justify-center '
-    src="m.svg" alt="m" />
-  </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-        <img 
-        className='absolute inline-flex items-center justify-center'
-        src="play.svg" alt="play" />
-
-        <img 
-        className='w-[394px] h-[606px]'
-        src="/Viduom.svg" alt="viduom" />
-    </div> 
-    </div>
-  )
-
-
+  // Don't forget to render the HeroSection component
+  return <HeroSection />;
 }

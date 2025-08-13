@@ -1,89 +1,65 @@
-import { div } from 'framer-motion/client'
-import React from 'react'
+'use client'; 
+import React from 'react';
+import { Averia_Serif_Libre, Bricolage_Grotesque } from 'next/font/google';
+import { motion } from "motion/react"
 
-export default function Text() {
-const text1 = "About Us.";
-const text2 = "We Are Qavo Brand.";
-
-const t1 = "Lorem ipsum dolor sit amet consectetur. In";
-const t2 = "donec quis etiam molestie eleifend. Quam ";
-const t3 = "eu amet a in fringilla turpis etiam id. Amet ";
-const t4 = "neque duis morbi blandit nec. Commodo";
-const t5 = " neque dignissim et amet pulvinar enim.";
+const averia = Averia_Serif_Libre({
+  subsets: ['latin'],
+  weight: ['300', '400', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-averia'
+});
 
 
+
+export default function OffersSection() {
   return (
-
-
-
-
-
-
-
-    <div className="relative container mx-auto px-4 py-20">
-
-
-
-
-
-
-
-<img
-     className='absolute ml-[750px] mt-[10px]'
-     src="hoodies/text/p1.png" alt="1" />
-
-<img
-     className='absolute ml-[80px] mt-[200px]'
-     src="hoodies/text/p2.png" alt="2" />
-
-<img
-     className='absolute ml-[1100px] mt-[250px]'
-     src="hoodies/text/p3.png" alt="3" />
-
-<img
-     className='absolute ml-[400px] mt-[440px]'
-     src="hoodies/text/p4.png" alt="4" />
-
-
-
-
-
-
-
-
-      {/* About Us. */}
-      <h2 className=" font-medium ml-[240px] text-[30px] text-[#BABABA] mb-4">
-        {text1}
+    <div className="relative w-full min-h-[1000px] bg-white">
+      {/* Offers Right Now */}
+      <h2 className="absolute left-1/2 top-[377px] -translate-x-1/2 text-[30px] leading-[36px] font-['PP Neue Montreal'] font-bold text-black">
+        Offers Right Now
       </h2>
 
-      {/* We Are Qavo Brand. */}
-      <h1 className=" font-normal text-[50px] ml-[240px] text-[#BABABA] mb-8">
-{text2}
-      </h1>
+      {/* We Are toullz Brand. */}
+      <div className={averia.className} >
+      <h3 className="absolute left-1/2 top-[406px] -translate-x-1/2 w-[512px] text-center text-[50px] leading-[60px] font-averia text-[#BABABA]">
+  We Are toullz Brand.
+</h3>
+</div>
 
-      {/* Lorem ipsum paragraph */}
-      <h1 className=" text-[50px] leading-[59px] ml-[200px] text-black  ">
-  {t1}
-  <br />
-{t2}
-<br />
-{t3}
-<br />
- {t4}
- <br />
-  {t5}
-     </h1>
+      {/* Description Text */}
+      <p className="absolute left-1/2 top-[583px] -translate-x-1/2 w-[1136px] text-center text-[40px] leading-[60px] text-black">
+        Lorem ipsum dolor sit amet consectetur. In donec quis etiam molestie eleifend. Quam eu amet a in fringilla turpis etiam id. Amet neque duis morbi blandit nec. Commodo neque dignissim et amet pulvinar enim.
+      </p>
 
 
 
 
 
 
+      {/* Image 1 */}
+      <img
+        className="absolute top-[726px] flex-col left-[1300px] "
+       src="/image3.svg"
+      />
+
+      {/* Image 2 */}
+      <img
+        className="absolute top-[792px] flex-col  left-[679px] "
+        src="image2.svg" 
+      />
+
+      {/* Image 3 */}
+      <img
+        className="absolute top-[583px] flex-col  left-[200px] "
+        src="image1.svg" 
+      />
+
+      {/* Image 4 */}
+      <img
+        className="absolute top-[442px] flex-col  left-[870px] "
+        src="image0.svg" 
+      />
     </div>
-    
-
-
   );
-};
-
-
+}

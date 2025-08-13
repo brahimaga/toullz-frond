@@ -1,45 +1,50 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function Page() {
-  const productData = [
-    {
-      id: 1,
-      images: ["/hoodies/prodact4/ph1.jpg", "/hoodies/prodact4/ph2.jpg", "/hoodies/prodact4/ph3.jpg"],
-      promo: "-43%",
-      price: "134.00 Dhs",
-      title: "Hoodies Blockout Unique",
-      subtitle: "Style & Edition",
-      category: "Hoodies"
-    },
-    {
-      id: 2,
-      images: ["/hoodies/prodact5/ph1.jpg", "/hoodies/prodact5/ph2.jpg", "/hoodies/prodact5/ph3.jpg"],
-      promo: "-43%",
-      price: "134.00 Dhs",
-      title: "Hoodies Blockout Unique",
-      subtitle: "Style & Edition",
-      category: "Hoodies"
-    },
-    {
-      id: 3,
-      images: ["/hoodies/prodact5/ph1.jpg", "/hoodies/prodact5/ph2.jpg", "/hoodies/prodact5/ph3.jpg"],
-      promo: "-43%",
-      price: "134.00 Dhs",
-      title: "Hoodies Blockout Unique",
-      subtitle: "Style & Edition",
-      category: "Hoodies"
-    },
-    {
-      id: 4,
-      images: ["/hoodies/prodact5/ph1.jpg", "/hoodies/prodact5/ph2.jpg", "/hoodies/prodact5/ph3.jpg"],
-      promo: "-43%",
-      price: "134.00 Dhs",
-      title: "Hoodies Blockout Unique",
-      subtitle: "Style & Edition",
-      category: "Hoodies"
-    }
-  ];
+  const [productData, setProductData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const baseURL = 'http://109.123.252.86:84';
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${baseURL}/api/products/`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const apiData = await response.json();
+
+        const transformedData = apiData.map(product => ({
+          id: product.id,
+          images: [
+            `${baseURL}${product.image_url}`,
+            ...product.images.map(img => `${baseURL}${img.image_url}`)
+          ],
+          promo: "-30%",
+          price: `${product.price} Dhs`,
+          oldPrice: `${Math.round(product.price * 1.3)} Dhs`,
+          title: product.name,
+          subtitle: product.description,
+          category: product.category?.category_name || 'Uncategorized',
+          variants: product.variants || []
+        }));
+
+        setProductData(transformedData);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="pb-10">
@@ -47,20 +52,25 @@ export default function Page() {
         Offers Right Now
       </h1>
 
-      <div className="bg-[#F5F5F5] w-full min-h-screen relative">
+      <div className="bg-white w-full min-h-screen p-[18px] relative">
         {productData.map((product, index) => (
-          <ProductCard key={product.id} product={product} isFirst={index === 0} />
+          <ProductCard 
+            key={product.id} 
+            product={product} 
+            isFirst={index === 0} 
+            baseURL={baseURL}
+          />
         ))}
       </div>
     </div>
   );
 }
 
-function ProductCard({ product, isFirst }) {
+function ProductCard({ product, isFirst, baseURL }) {
   const [count, setCount] = useState(0);
   const [shadowOverlay, setShadowOverlay] = useState(false);
-  const [selectedSize, setSelectedSize] = useState('M');
-  const [selectedColor, setSelectedColor] = useState('bg-[#030303]');
+  const [selectedSize, setSelectedSize] = useState(product.variants[0]?.size?.size_label || 'M');
+  const [selectedColor, setSelectedColor] = useState(product.variants[0]?.color?.hex || '#030303');
   const [quantity, setQuantity] = useState(1);
   const [items, setItems] = useState([]);
   const [formData, setFormData] = useState({
@@ -69,308 +79,477 @@ function ProductCard({ product, isFirst }) {
     phone: ''
   });
 
-  const handleNext = () => {
-    setCount((prev) => (prev + 1) % product.images.length);
+  // Image navigation
+  const handleNext = () => setCount((prev) => (prev + 1) % product.images.length);
+  const handlePrev = () => setCount((prev) => (prev - 1 + product.images.length) % product.images.length);
+  const currentImage = product.images?.[count] || '/placeholder-image.jpg';
+
+  // Quantity handlers
+  const handleIncreaseQuantity = () => {
+    const newQuantity = quantity + 1;
+    setQuantity(newQuantity);
+    updateCartItems(newQuantity);
   };
 
-  const handlePrev = () => {
-    setCount((prev) => (prev - 1 + product.images.length) % product.images.length);
+  const handleDecreaseQuantity = () => {
+    const newQuantity = Math.max(1, quantity - 1);
+    setQuantity(newQuantity);
+    updateCartItems(newQuantity);
   };
 
-  const currentImage = product.images[count];
+  // Update cart items
+  const updateCartItems = (newQuantity) => {
+    const existingItem = items.find(item => 
+      item.name === product.title && 
+      item.size === selectedSize && 
+      item.color === selectedColor
+    );
 
+    if (existingItem) {
+      setItems(items.map(item => 
+        item.id === existingItem.id 
+          ? {...item, quantity: newQuantity} 
+          : item
+      ));
+    } else if (newQuantity > 0) {
+      setItems([...items, {
+        id: Date.now(),
+        name: product.title,
+        size: selectedSize,
+        color: selectedColor,
+        quantity: newQuantity,
+        price: parseFloat(product.price.replace(' Dhs', ''))
+      }]);
+    }
+  };
+
+  // Add to cart functionality
   const handleAddToCart = () => {
-    const newItem = {
-      id: Date.now(),
-      name: product.title,
-      size: selectedSize,
-      colorClass: selectedColor,
-      quantity: quantity,
-      price: parseFloat(product.price)
-    };
-    setItems([...items, newItem]);
-    setShadowOverlay(true);
+    const existingItem = items.find(item => 
+      item.name === product.title && 
+      item.size === selectedSize && 
+      item.color === selectedColor
+    );
+
+    if (existingItem) {
+      setItems(items.map(item => 
+        item.id === existingItem.id 
+          ? {...item, quantity: item.quantity + 1} 
+          : item
+      ));
+    } else {
+      setItems([...items, {
+        id: Date.now(),
+        name: product.title,
+        size: selectedSize,
+        color: selectedColor,
+        quantity: 1,
+        price: parseFloat(product.price.replace(' Dhs', ''))
+      }]);
+    }
+    // Removed setShadowOverlay(true) to keep the same UI
   };
 
-  const handleDelete = (id) => {
-    setItems(items.filter(item => item.id !== id));
-  };
+  const handleDeleteItem = (id) => setItems(items.filter(item => item.id !== id));
 
+  // Form handling
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log('Form submitted:', formData);
+    if (!formData.fullName || !formData.address || !formData.phone) {
+      alert('Please fill all fields');
+      return;
+    }
+    if (items.length === 0) {
+      alert('Your cart is empty');
+      return;
+    }
+    
+    // Here you would typically send the data to your backend
+    console.log('Order submitted:', { 
+      customer: formData, 
+      items, 
+      total: total.toFixed(2) 
+    });
+    
+    // Reset after submission
+    setShadowOverlay(false);
+    setItems([]);
+    setFormData({ fullName: '', address: '', phone: '' });
+    alert('Order placed successfully!');
   };
 
   const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
+  // Get available variants
+  const availableSizes = [...new Set(product.variants.map(v => v.size?.size_label))].filter(Boolean);
+  const availableColors = [...new Set(product.variants.map(v => v.color?.hex))].filter(Boolean);
+
   return (
-    <div className={`pt-${isFirst ? '0' : '[40px]'}`}>
-      <div className="relative">
-        {/* Scroll Buttons */}
-        <div className="absolute flex gap-[10px] ml-[20px] z-10 mt-[410px]">
-          <button onClick={handlePrev} className="bg-white rounded-full w-[51.56px] h-[51.56px] flex items-center justify-center">
-            <img src="phone/yasar.svg" alt="scroll left" width={20} height={20} />
-          </button>
-          <button onClick={handleNext} className="bg-white rounded-full w-[51.56px] h-[51.56px] flex items-center justify-center">
-            <img src="phone/yamin.svg" alt="scroll right" width={20} height={20} />
-          </button>
-        </div>
-
-        {/* Icons */}
-        <div className="absolute right-4 top-4 flex flex-col items-end">
-          <img src="phone/icona.svg" alt="favorite" width={55} height={55} />
-        </div>
-
-        {/* Product Image */}
-        <img 
-          src={currentImage} 
-          alt={`product ${product.id}`} 
-          className="w-full rounded-[40px] p-2 cursor-pointer" 
-          onClick={() => setShadowOverlay(true)}
+    <div className={`${isFirst ? 'pt-0 md:pt-0' : 'pt-4 md:pt-10'}`}>
+  {/* Product Card Main Content */}
+  <div className="relative">
+    {/* Navigation buttons */}
+    <div className="absolute flex gap-2 bottom-4 mb-[100px] left-[70px] transform -translate-x-1/2 z-10 md:ml-5 md:mt-[100px] md:left-0 md:translate-x-0">
+      <button
+        onClick={handlePrev}
+        className="bg-[#F5F5F5] rounded-full w-[55px] h-[55px] md:w-[74px] md:h-[74px] flex items-center justify-center shadow-sm hover:bg-gray-50 transition-colors"
+      >
+        <img
+          src="/phone/yasar.svg"
+          alt="previous"
+          className="w-6 md:w-[30px]"
+          onError={(e) => {
+            e.currentTarget.src = '/placeholder-image.jpg';
+          }}
         />
+      </button>
+      <button
+        onClick={handleNext}
+        className="bordr-[#F5F5F5] rounded-full w-[55px] h-[55px] md:w-[74px] md:h-[74px] flex items-center justify-center shadow-sm hover:bg-gray-50 transition-colors"
+      >
+        <img
+          src="/phone/yamin.svg"
+          alt="next"
+          className="w-6 md:w-[30px]"
+          onError={(e) => {
+            e.currentTarget.src = '/placeholder-image.jpg';
+          }}
+        />
+      </button>
+    </div>
 
-        {/* Promo Badge */}
-        <h1 className="absolute text-black text-[32px] right-4 top-20">
+    {/* Favorite button */}
+    <button className="absolute w-[55px] h-[55px] right-9 top-[30px] md:right-9 md:top-[40px] flex flex-col gap-2">
+      <img
+        src="/phone/icona.svg"
+        alt="favorite"
+        onError={(e) => {
+          e.currentTarget.src = '/placeholder-image.jpg';
+        }}
+      />
+    </button>
+
+    {/* Main product image */}
+    <img
+      src={currentImage}
+      alt={product.title}
+      className="w-full rounded-2xl md:rounded-3xl p-1 md:p-2 cursor-pointer hover:opacity-95 transition-opacity"
+      onClick={() => setShadowOverlay(true)}
+      onError={(e) => {
+        e.currentTarget.src = '/placeholder-image.jpg';
+      }}
+      loading="lazy"
+    />
+
+    {/* Promo badge */}
+    {product.promo && (
+      <div className="absolute left-[20px] top-[60%] md:ml-[20px] md:top-[440px] w-20 h-8 md:w-[108px] md:h-[42px] bg-[#FEB93C] flex items-center justify-center px-2 py-1 md:px-3 rounded-full">
+        <span className="text-white text-sm md:text-[24px] font-medium">
           {product.promo}
-        </h1>
-        
-        {/* Add to Cart Button */}
-        <img 
-          src="phone/shop.svg" 
-          alt="add to cart" 
-          width={55} 
-          height={55} 
-          className="absolute right-4 mt-[12px] cursor-pointer"
-          onClick={handleAddToCart}
-        />
-
-        {/* Product Info */}
-        <div className="px-[10px]">
-          <h1 className="text-[32px] text-black mt-[20px]">{product.price}</h1>
-          <h1 className="text-[27px] text-[#878787] mt-[20px]">
-            {product.title}
-            <br />
-            {product.subtitle}
-          </h1>
-        </div>
+        </span>
       </div>
+    )}
 
-      {/* Product overlay modal */}
+    {/* Add to cart button */}
+    <button
+      onClick={handleAddToCart}
+      className="absolute right-3 mr-[10px] top-[57%] md:right-4 md:top-[400px] cursor-pointer hover:scale-105 transition-transform w-[70px] h-[69px] md:w-[70px] md:h-[69px]"
+    >
+      <img
+        src="/phone/shop.svg"
+        alt="Add to cart"
+        className="w-full h-full"
+        onError={(e) => {
+          e.currentTarget.src = '/placeholder-image.jpg';
+        }}
+      />
+    </button>
+
+    {/* Plus button - now adds to cart */}
+    <button
+      onClick={handleAddToCart}
+      className="absolute  bg-white w-[55px] h-[55px] mr-[20px] md:w-[55px] md:h-[55px] rounded-full right-2 top-[47%] md:right-4 md:top-[260px]   flex items-center justify-center text-lg md:text-xl font-bold"
+    >
+      +
+    </button>
+
+    {/* Product info */}
+    <div className="px-2 mt-[100px] md:mt-[150px]">
+      <div className="text-xl md:text-3xl text-black font-medium">
+        {product.price}{' '}
+        <span className="line-through text-gray-400 text-sm md:text-xl ml-2">
+          {product.oldPrice}
+        </span>
+      </div>
+      <div className="text-base md:text-[27px] text-[#878787] mt-1">
+        <div>{product.title}</div>
+        <div>{product.subtitle}</div>
+      </div>
+    </div>
+  </div>
+
+
+      {/* Expanded Product View Overlay */}
       {shadowOverlay && (
-        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-[100] w-full h-full p-[10px]  overflow-y-auto">
-          <img 
-            onClick={() => setShadowOverlay(false)}
-            aria-label="Close product view"
-            className='ml-[400px] mb-[730px] cursor-pointer' 
-            src="/exit.svg" 
-            alt="Close" 
-            width={34} 
-            height={34} 
-          />
+        <div className="fixed inset-0 bg-black/50 flex flex-col items-center z-50 w-full h-full p-1 overflow-y-auto">
+          <div className="w-full max-w-md flex flex-col gap-4">
+              <div className="bg-white h-full rounded-[50px] overflow-hidden shadow-xl">
+              {/* Overlay header with navigation */}
+              
+              <div className="relative mt-[100px]">
 
-          <div className="bg-white absolute rounded-[40px]  w-full mb-[280px] overflow-hidden flex flex-col">
-            {/* Product details section */}
-            <div className="p-3">
-              <div className="flex gap-1 items-center mb-4">
-                <h1 className="font-bold text-[#141414] text-[12px]">{product.title}</h1>
-                <span className="rounded-full bg-[#2F2F2F] text-[10px] px-3 py-1 text-white">
-                  {product.category}
-                </span>
-              </div>
+  
 
-              <p className="text-[#878787] text-[17px] mb-1">
-                {product.title} <br /> {product.subtitle}
-              </p>
+                <div className=" absolute flex fixed   justify-center p-0.5 py-[10px] gap-3  ml-5">
 
-              <h2 className="font-montreal text-[27px] text-black mb-6">   
-                {product.price}
-              </h2>
 
-              {/* Size Selection */}
-              <div className="mb-6">
-                <div className="flex flex-wrap gap-3">
-                  {['S', 'M', 'L', 'XL', 'Over'].map((size) => (
-                    <label key={size} className="cursor-pointer">
-                      <input
-                        type="radio"
-                        name="size"
-                        value={size}
-                        className="hidden peer"
-                        checked={selectedSize === size}
-                        onChange={() => setSelectedSize(size)}
-                      />
-                      <span className="inline-flex items-center justify-center w-[35px] h-[27px] rounded-full border text-[#DDDDDD] border-[#DDDDDD] peer-checked:bg-black peer-checked:text-white peer-checked:border-black text-sm">
-                        {size}
-                      </span>
-                    </label>
-                  ))} 
+                  {/* image */}
+                {/* <img 
+  className="fixed  left-0 top-0 w-full h-[95px] -z-50  " 
+  src="db.svg" 
+  alt="" 
+/> */}
+
+
+
+ {/* button */}
+ <div className="flex gap-[200px]">
+
+   
+                  <div className="fixed left-0 top-0">
+
+                    <div className="flex gap-[10px] ml-[10px]">
+                  <button onClick={handlePrev} className="bg-[#F5F5F5] w-[74px] h-[74px] rounded-full flex items-center justify-center">
+                    <img 
+                      src="/phone/yasar.svg" 
+                      alt="previous" 
+                      className="w-[30px] h-[30px]"
+                      onError={(e) => e.target.src = '/placeholder-image.jpg'}
+                    />
+                  </button>
+                  <button onClick={handleNext} className="bg-[#F5F5F5] w-[74px] h-[74px] rounded-full flex items-center justify-center">
+                    <img 
+                      src="/phone/yamin.svg" 
+                      alt="next" 
+                      className="w-[30px] h-[30px]"
+                      onError={(e) => e.target.src = '/placeholder-image.jpg'}
+                    />
+                  </button>
+
+                  </div>
+
+                  <div className="flex gap-3 ml-[120px] mt-[10px]"></div>
+                  <button onClick={handleAddToCart}>
+                  <h1 className="absolute mb-[40px] bg-[#FEB93C]  rounded-full text-white ">
+                  {total.toFixed(2)}
+                  </h1>
+                  {/* <div className="absolute bg-[#FEB93C] w-[59px] h-[59px] rounded-full text-white text-sm  p-2">{item.quantity.toString().padStart(2, '0')}</div> */}
+
+                    <img 
+                      src="shop.svg" 
+                      alt="shop menu" 
+                      className="w-[35px] h-[35px] mb-1"
+                      onError={(e) => e.target.src = '/placeholder-image.jpg'}
+                    />
+                  </button>
+                  <button 
+                    onClick={() => setShadowOverlay(false)}
+                    className="bg-[#F5F5F5] w-[55px] h-[55px] text-black mr-1 mt-1 rounded-full"
+                  >
+                    ×
+                  </button>
+                  </div>
                 </div>
-              </div>
+                </div>
 
-              {/* Color Selection */}
-              <div className="mb-6">
-                <div className="flex flex-wrap gap-4">
-                  {[
-                    { value: 'bg-red-100', label: 'Red' },
-                    { value: 'bg-[#030303]', label: 'Black' },
-                    { value: 'bg-[#BBBBBB]', label: 'Gray' },
-                    { value: 'bg-[#115123]', label: 'Green' },
-                    { value: 'bg-[#6A200C]', label: 'Brown' },
-                  ].map((color) => (
-                    <label key={color.value} className="cursor-pointer">
-                      <input
-                        type="radio"  
-                        name="color"
-                        value={color.value}
-                        className="hidden peer"
-                        checked={selectedColor === color.value}
-                        onChange={() => setSelectedColor(color.value)}
+                {/* Quantity controls */}
+                <div className="absolute mt-[40px] ml-[35px] flex gap-3">
+                  <button 
+                    onClick={handleIncreaseQuantity}
+                    className="bg-white mb-[50px] w-[55px] h-[55px] rounded-full text-[27px] text-black flex items-center justify-center"
+                  >
+                    +
+                  </button>
+                  <button className="w-[70px] h-[69px] rounded-full bg-white/30 backdrop-blur flex items-center justify-center hover:bg-white/50 transition-colors">
+                    <div className="w-[55px] h-14 bg-white rounded-full border border-[#dcdcdc] flex items-center justify-center hover:bg-gray-50">
+                      <img 
+                        alt="Cart" 
+                        className="w-8 h-8" 
+                        src="/prodact/shop.svg"
+                        onError={(e) => e.target.src = '/placeholder-image.jpg'}
                       />
-                      <span
-                        className={`${color.value} w-8 h-8 rounded-full inline-flex items-center justify-center ring-2 ring-transparent peer-checked:ring-black`}
-                        aria-label={color.label}
-                      >
-                        <span className="w-3 h-3 rounded-full bg-white opacity-0"></span>
-                      </span>
-                    </label>
+                    </div>
+                  </button>                
+                </div>
+
+                {/* Thumbnail images */}
+                <div className="absolute flex gap-2 mt-[290px] ml-[30px]">
+                  {product.images.slice(0, 3).map((img, idx) => (
+                    <button 
+                      key={idx}
+                      onClick={() => setCount(idx)}
+                      className={`w-[61px] h-[74px] p-0.1 py-0.1 rounded-full ${count === idx ? 'ring-2 ring-[#FEB93C]' : ''}`}
+                    >
+                      <img 
+                        className="w-[72px] h-[72px] object-cover rounded-full" 
+                        src={img} 
+                        alt={`Thumbnail ${idx}`}
+                        onError={(e) => e.target.src = '/placeholder-image.jpg'}
+                      />
+                    </button>
                   ))}
                 </div>
+
+                {/* Main expanded image */}
+                <img 
+                  src={currentImage}
+                  alt={product.title}
+                  className="w-full p-[15px] h-[385px] rounded-[60px] object-cover"
+                  onError={(e) => e.target.src = '/placeholder-image.jpg'}
+                />
+                
+                {/* Promo badge */}
+                {product.promo && (
+                  <button className="absolute w-[88px] h-[42px] top-[120px] left-[310px] bg-[#FEB93C] text-white text-[24px] px-2 py-1 rounded-full">
+                    {product.promo}
+                  </button>
+                )}
               </div>
 
-              {/* Quantity Controls */}
-              <div className="">
-                <div className="flex ml-[240px] gap-1">
+              {/* Quantity controls */}
+              <div className="flex absolute justify-between items-center mt-[40px] ml-[260px]">
+                <div className="flex items-center gap-1 mb-2">
                   <button
-                    className="rounded-lg bg-[#ECECEC] w-10 h-10 flex items-center justify-center hover:bg-gray-200 transition-colors"
-                    onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
-                    aria-label="Decrease quantity"
+                    onClick={handleDecreaseQuantity}
+                    disabled={quantity === 1}
+                    className={`w-[42px] h-[42px] rounded-lg flex items-center justify-center ${
+                      quantity === 1 ? 'bg-gray-100 opacity-50' : 'bg-gray-100 hover:bg-gray-200'
+                    } transition-colors`}
                   >
                     -
                   </button>
-                  <div className="rounded-lg bg-[#ECECEC] w-14 h-10 flex items-center justify-center">
+                  <div className="w-[53px] h-[42px] text-[13px] rounded-lg border border-[#ECECEC] flex items-center justify-center">
                     {quantity.toString().padStart(2, '0')}
                   </div>
                   <button
-                    className="rounded-lg bg-[#ECECEC] w-10 h-10 flex items-center justify-center hover:bg-gray-200 transition-colors"
-                    onClick={() => setQuantity((prev) => prev + 1)}
-                    aria-label="Increase quantity"
+                    onClick={handleIncreaseQuantity}
+                    className="w-[42px] h-[42px] rounded-lg bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors"
                   >
                     +
                   </button>
                 </div>
               </div>
 
-              <button 
-                onClick={handleAddToCart}
-                className="w-full bg-black text-white py-4 rounded-[40px] hover:bg-gray-800 transition-colors mb-8"
-              >
-                Add to Cart
-              </button>
-            </div>
-          </div>
+              {/* Product details */}
+              <div className="p-6">
+                <p className="text-xs text-[#FEB93C]">{product.category}</p>
+                <h2 className="text-[27px] font-medium text-black mb-2">{product.title}</h2>
+                <p className="text-[#B7B7B7] text-[16px] mb-2">Ref: 00GBM12</p>
+                <span className="text-[48px] text-[#FEB93C] font-medium">{product.price}</span>
+                <p className="text-gray-500 text-sm mb-4">{product.subtitle}</p>
+              </div>
 
-          {/* Cart summary section */}
-          <div className="absolute mt-[325px] h-[184px] w-full  rounded-[40px] bg-white p-5 border-t border-gray-200">
-            <div className="space-y-4 max-h-[60px] overflow-y-auto mb-6">
-              {items.map((item) => (
-                <div key={item.id} className="flex justify-between items-center pb-0.5">
-                  <div className="flex items-center gap-1">
-                    <span className="text-sm text-[#DDDDDD]">{item.name}</span>
-                    <span className="bg-[#0D0D0D] rounded-full w-5 h-5 text-white text-xs flex items-center justify-center">
-                      {item.size}
-                    </span>
-                    <span className={`${item.colorClass} rounded-full w-5 h-5`}></span>
-                  </div>
-                  
-                  <div className="flex items-center gap-3">
-                    <span className="text-[#878787] text-xs">
-                      {item.quantity.toString().padStart(2, '0')}
-                    </span>
-                    <span className="text-xs font-medium text-[#878787]">
-                      {item.price.toFixed(2)} Dhs
-                    </span>
-                    <button 
-                      onClick={() => handleDelete(item.id)}
-                      className="text-[#878787] hover:text-red-500"
-                      aria-label="Remove item"
-                    >
-                      <img src="/delet.svg" alt="Delete item" className="w-4 h-4" />
-                    </button>
-                  </div>
+              {/* Order form */}
+              <div className="space-y-4 p-[15px]">
+                <div>
+                  <label className="block text-sm font-medium text-black mb-1">Full Name</label>
+                  <input 
+                    name="fullName"
+                    className="w-full h-12 border border-gray-200 rounded-lg px-4 text-sm"
+                    placeholder="Nom Complet"
+                    value={formData.fullName}
+                    onChange={handleChange}
+                    required
+                  />
                 </div>
-              ))}
-            </div>
 
-            <div className="flex justify-between mb-2">
-              <span className="text-sm">Shipping</span>
-              <span className="text-sm">Free</span>
-            </div>
-            <div className="flex justify-between font-medium">
-              <span>Total</span>
-              <span>{total.toFixed(2)} Dhs</span>
-            </div>
-          </div>
+                <div>
+                  <label className="block text-sm font-medium text-black mb-1">Full Address</label>
+                  <input 
+                    name="address"
+                    className="w-full h-12 border border-gray-200 rounded-lg px-4 text-sm"
+                    placeholder="Ville, Adresse"
+                    value={formData.address}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-          {/* Checkout form section */}
-          <div className='absolute bg-white p-8 mt-[839px] w-full h-[326px] rounded-[40px] border-t border-gray-200'>
-            <div className="mb-4">
-              <label className="block font-medium text-sm text-black mb-1">
-                Full Name
-              </label>
-              <input 
-                name="fullName"
-                className="w-full h-[50px] border border-[#ECECEC] rounded-lg px-4 text-sm"
-                placeholder="Nom Complet"
-                value={formData.fullName}
-                onChange={handleChange}
-              />
-            </div>
+                <div>
+                  <label className="block text-sm font-medium text-black mb-1">Phone Number</label>
+                  <input 
+                    name="phone"
+                    type="tel"
+                    className="w-full h-12 border border-gray-200 rounded-lg px-4 text-sm"
+                    placeholder="+212 666-666666"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </div>
 
-            <div className="mb-4">
-              <label className="block font-medium text-sm text-black mb-1">
-                Full Address
-              </label>
-              <input 
-                name="address"
-                className="w-full h-[50px] border border-[#ECECEC] rounded-lg px-4 text-sm"
-                placeholder="Ville, Adresse"
-                value={formData.address}
-                onChange={handleChange}
-              />
-            </div>
+              {/* Cart items */}
+              <div className="space-y-3 max-h-40 overflow-y-auto mb-4 p-4">
+                {items.length > 0 ? (
+                  items.map((item) => (
+                    <div key={item.id} className="flex justify-between items-center">
+                      <div className="flex items-center gap-2">
+                        <span className="text-gray-500 text-sm">{item.name}</span>
+                        { <span className="text-xs text-gray-400"></span>}
+                        {item.color && (
+                          <span 
+                            className="w-3 h-3 rounded-full inline-block"
+                            style={{ backgroundColor: item.color }}
+                          />
+                        )}
+                      </div>
+                      
+                      <div className="flex items-center gap-3">
+                        <span className="text-gray-400 text-sm">
+                          {item.quantity.toString().padStart(2, '0')}
+                        </span>
+                        <span className="text-sm font-medium">
+                          {(item.price * item.quantity).toFixed(2)} Dhs
+                        </span>
+                        <button 
+                          onClick={() => handleDeleteItem(item.id)}
+                          className="text-gray-400 hover:text-red-500 transition-colors"
+                        >
+                    <img src="delet.svg" alt="" />
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-gray-400 text-sm text-center">Your cart is empty</p>
+                )}
+              </div>
 
-            <div className="mb-6">
-              <label className="block font-medium text-sm text-black mb-1">
-                Phone Number
-              </label>
-              <input 
-                name="phone"
-                className="w-full h-[50px] border border-[#ECECEC] rounded-lg px-4 text-sm"
-                placeholder="+212 666-666666"
-                value={formData.phone}
-                onChange={handleChange}
-              />
-            </div>
+              {/* Order summary */}
+              <div className="border-t border-gray-100 pt-4 px-4">
+                <div className="flex justify-between font-medium mt-2">
+                  <span className="text-[24px] text-[#BDBDBD]">Total MAD:</span>
+                  <span className="text-[#FEB93C] text-[40px]">{total.toFixed(2)}</span>
+                </div>
+              </div>
 
-            <div className="flex items-center justify-between gap-4">
-              <button 
-                onClick={handleSubmit}
-                className="flex-1 bg-[#161616] w-[259px] h-[70px] mt-[20px] text-white rounded-[40px] hover:bg-[#333] transition-colors"
-              >
-                <span>Acheter Maintenant</span>
-              </button>
-              <button className="absolute bg-black w-[68px] h-[68px] ml-[347px] rounded-full mt-[20px] hover:bg-gray-50 transition-colors">
-                <img src="/lin.svg" alt="Alternative payment" className="w-6 h-6" />
-              </button>
+              {/* Submit button */}
+              <div className="flex justify-between items-center gap-4 p-4">
+              <button
+  onClick={handleSubmit}
+  className="w-[237px] h-[70px] bg-[#FEB93C] text-white text-[25px] rounded-full hover:bg-gray-800 transition-colors font-medium flex items-center justify-center gap-3"
+>
+  <span>Get Payed</span>
+  <img src="sho.svg" alt="shop" className="w-[39px] h-[39px]" />
+</button>
+
+              </div>
             </div>
           </div>
         </div>

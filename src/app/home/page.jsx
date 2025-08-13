@@ -10,9 +10,12 @@ export default function Home() {
     {
       id: 1,
       images: [
-        '/home/back.png',
-        '/prodact2/prodact2.png',
-        '/prodact2/prodact3.png',
+        '/bghom.png',
+        '/bghom.png',
+        '/bghom.png',
+        '/bghom.png',
+        '/bghom.png',
+       
       ],
     },
   ];
@@ -35,11 +38,14 @@ export default function Home() {
   return (
     <div className="relative">
       {/* Background Image */}
-      <img
-        className="p-3.5 w-full h-full"
-        src={currentImage}
-        alt={`Product image ${count + 1}`}
-      />
+      <div className="flex items-center justify-center h-full">
+  <img
+    className="w-full h-full p-[10px]"
+    src={currentImage}
+    alt={`Product image ${count + 1}`}
+  />
+</div>
+
 
       {/* Text */}
       <h1 className="absolute text-pretty text-white text-[57px] left-[150px] top-[280px]">

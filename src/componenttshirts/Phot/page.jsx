@@ -1,86 +1,88 @@
-"use client"; 
-import React, { useRef } from 'react'; 
-import { motion, useScroll, useTransform } from 'framer-motion'; 
-import { useInView } from 'react-intersection-observer';
-
-const text1 = "Super Hoodies"; 
-const text2 = "The Art Of Streetwear."; 
-const nbr = "134.00 Dhs"; 
-const nbr1 = "199.00 Dhs"; 
-const name = "299.00 Dhs ";
+"use client";
+import React, { useRef, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import 'swiper/css';
+import 'swiper/css/navigation';
 
 export default function Phot() {
-  const containerRef = useRef(null); 
-  const { scrollYProgress } = useScroll({ 
-    target: containerRef, 
-    offset: ["start start", "end end"] 
-  }); 
+  const containerRef = useRef(null);
 
-  // Image movement based on scroll
-  const y1 = useTransform(scrollYProgress, [0, 1], [0, -200]); 
-  const y2 = useTransform(scrollYProgress, [0, 1], [0, -150]); 
-  const y3 = useTransform(scrollYProgress, [0, 1], [0, -100]); 
+  // Scroll-based transforms for parallax-like effect
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
 
-  // Animation for elements when they appear
-  const [ref1, inView1] = useInView({ threshold: 0.1, triggerOnce: false }); 
-  const [ref2, inView2] = useInView({ threshold: 0.1, triggerOnce: false }); 
-  const [ref3, inView3] = useInView({ threshold: 0.1, triggerOnce: false }); 
+  const yTransforms = [
+    useTransform(scrollYProgress, [0, 1], [0, -300]),
+    useTransform(scrollYProgress, [0, 1], [0, -200]),
+    useTransform(scrollYProgress, [0, 1], [0, -150]),
+  ];
 
-  return ( 
-    <div ref={containerRef} className='bg-[#252525] mt-[40px] w-full h-[200vh]'>
-      <div>
-        <motion.img 
-          initial={{ x: 0, y: -106, rotate: 0 }}
-          animate={{ x: 100, y: 900, rotate: 200 }}
-          transition={{ duration: 1, delay: 12, ease: "easeInOut" }}
-          ref={ref2}
-          className='absolute w-[499.06px] h-[640.03px] ml-[200px] mt-[420px]'
-          src="/hoodies/phot/im3.png" 
-          alt="prodact3"
-        />
-        <motion.img 
-          initial={{ x: 0, y: -106, rotate: 0 }}
-          animate={{ x: 100, y: 900, rotate: 200 }}
-          transition={{ duration: 1, delay: 10, ease: "easeInOut" }}
-          ref={ref2}
-          className='absolute ml-[300px] mt-[360px]'
-          src="/hoodies/phot/im2.png" 
-          alt="prodact2"
-        />
-      </div>
+  const [refPrice, inViewPrice] = useInView({ threshold: 0.1, triggerOnce: true });
+  const [progress, setProgress] = useState({}); // Track slide progress for rotation
 
-      <motion.img 
-        initial={{ x: 0, y: -106, rotate: 0 }}
-        animate={{ x: 100, y: 900, rotate: 200 }}
-        transition={{ duration: 1, delay: 8, ease: "easeInOut" }}
-        ref={ref2}
-        className='absolute w-[616px] h-[790px] ml-[600px] mt-[300px]'
-        src="/hoodies/phot/im1.png" 
-        alt="prodact1"
-      />
-      
-      <motion.img 
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        className='absolute ml-[1130px] mt-[900px] w-[70px] h-[70px]'
-        src="/phot/shop.svg" 
-        alt="shop"
-      />
+  const slides = [
+    { src: "/hoodies/phot/im1.png", yTransform: yTransforms[0] },
+    { src: "/hoodies/phot/im2.png", yTransform: yTransforms[1] },
+    { src: "/hoodies/phot/im3.png", yTransform: yTransforms[2] },
+    { src: "/hoodies/phot/im1.png", yTransform: yTransforms[3] },
+    { src: "/hoodies/phot/im2.png", yTransform: yTransforms[4] },
+    { src: "/hoodies/phot/im3.png", yTransform: yTransforms[5] },
+  ];
 
-      <h1
-       
-      
-        className='absolute mt-[900px] text-white text-[32px] ml-[620px]'
+  return (
+    <div
+      ref={containerRef}
+      className="bg-[#252525] mt-10 w-full h-[200vh] relative overflow-hidden perspective-[1000px]"
+    >
+      <Swiper
+        spaceBetween={50}
+        slidesPerView={1}
+        navigation
+        modules={[Navigation]}
+        onProgress={(swiper) => {
+          const newProgress = {};
+          swiper.slides.forEach((slide, index) => {
+            newProgress[index] = slide.progress; // -1 to 1 as slides enter/leave viewport
+          });
+          setProgress(newProgress);
+        }}
+        className="w-full h-full"
       >
-        {nbr}
-      </h1>
+        {slides.map((slide, index) => (
+          <SwiperSlide key={index}>
+            <motion.img
+              className="mx-auto mt-[420px] w-[300px] md:w-[500px] h-auto"
+              src={slide.src}
+              alt={`product${index + 1}`}
+              style={{
+                y: slide.yTransform,
+                rotate: progress[index] ? progress[index] * 20 : 0, // rotate up to ±20 degrees
+                transformStyle: "preserve-3d",
+              }}
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
 
-      <h1 
-     
-        className='absolute mt-[880px] text-[#FEFEFE]/40 text-[22px] ml-[620px]'
+      {/* Price Text */}
+      <motion.div
+        ref={refPrice}
+        initial={{ opacity: 0, y: 50 }}
+        animate={inViewPrice ? {
+          opacity: 1,
+          y: 0,
+          transition: { type: "spring", damping: 20, delay: 0.7 }
+        } : {}}
+        className="absolute bottom-[100px] left-1/2 -translate-x-1/2 text-center z-10"
       >
-        {nbr1}
-      </h1>
+        <motion.h1 className="text-white text-[32px]">134.00 Dhs</motion.h1>
+        <motion.h1 className="text-[#FEFEFE]/40 text-[22px] line-through">199.00 Dhs</motion.h1>
+      </motion.div>
     </div>
   );
 }
