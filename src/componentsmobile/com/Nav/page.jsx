@@ -6,6 +6,8 @@ import Image from 'next/image';
 
 export default function Page() {
   const [shadowMean, setShadowMean] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+
 
   // --- Cart state ---
   const [items, setItems] = useState([
@@ -23,6 +25,8 @@ export default function Page() {
   const totalUSD = useMemo(() => subtotal + shipping, [subtotal, shipping]);
   const totalMAD = useMemo(() => totalUSD * usdToMad, [totalUSD, usdToMad]);
   const totalQty = useMemo(() => items.reduce((s, it) => s + it.qty, 0), [items]);
+
+   
 
   // Helpers
   const fmt = useCallback((n) => `$${n.toFixed(2)}`,[/* stable */]);
@@ -54,31 +58,44 @@ export default function Page() {
 
   return (
     <div>
-      <div className="flex items-center justify-center gap-[90px] mt-[10px] w-full ">
-        {/* الشعار */}
-        <Image src="/logodesktop.svg" alt="logo" width={110.94} height={26.35} />
+      <div className="flex flex-wrap items-center justify-between md:justify-center gap-4 md:gap-[90px] mt-[10px] w-full px-4">
+  {/* الشعار */}
+  <Image 
+    src="/logodesktop.svg" 
+    alt="logo" 
+    width={110.94} 
+    height={26.35} 
+    className="w-[80px] md:w-[110.94px] h-auto" 
+  />
 
-        {/* زر All product */}
-        <Link href="/allproduact">
-          <button className="inline-flex items-center border text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 bg-transparent text-[#2e2e2e] rounded-full px-[15px] py-2 border-[#dddddd]">
-            <span className="font-medium text-sm">All Product</span>
-          </button>
-        </Link>
+  {/* زر All product */}
+  <Link href="/allproduact">
+    <button className="inline-flex items-center border text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 bg-transparent text-[#2e2e2e] rounded-full px-[12px] md:px-[15px] py-2 border-[#dddddd]">
+      <span className="font-medium text-sm">All Product</span>
+    </button>
+  </Link>
 
-        {/* أيقونات السلة والقائمة */}
-        <div className="flex items-center gap-3 relative">
-          <h1 className=" absolute mb-[30px] ml-[10px] bg-[#FEB93C] inline-flex items-center rounded-full text-white p-1 py-1 px-2 text-[10px]"> {totalQty} </h1>
+  {/* أيقونات السلة والقائمة */}
+  <div className="flex items-center gap-3 relative">
+    <h1 className="absolute -top-2 left-3 bg-[#FEB93C] inline-flex items-center rounded-full text-white p-1 px-2 text-[10px]">
+      {totalQty}
+    </h1>
 
-          <img
-            className="w-[26px] h-[26px] cursor-pointer"
-            alt="shop"
-            src="/shop.svg"
-            onClick={() => setShadowMean(true)}
-          />
+    <img
+      className="w-[24px] h-[24px] cursor-pointer"
+      alt="shop"
+      src="/shop.svg"
+      onClick={() => setShadowMean(true)}
+    />
 
-          <img className="w-[26px] h-[26px]" alt="menu" src="/meun.svg" />
-        </div>
-      </div>
+    <img 
+      className="w-[24px] h-[24px]" 
+      alt="menu" 
+      src="/meun.svg" 
+    />
+  </div>
+</div>
+
 
       {shadowMean && (
         <div className="fixed inset-0 bg-black/50 flex flex-col items-center z-50 w-full h-full p-1 overflow-y-auto" onClick={(e) => { if (e.target === e.currentTarget) setShadowMean(false); }}>
@@ -153,7 +170,7 @@ export default function Page() {
               <div className="border border-[#ECECEC] mt-[20px]"></div>
               <div className="flex gap-[100px] ml-[10px] mt-[10px]">
                 <h1 className="text-[#BDBDBD] text-[18px]">Total USD:</h1>
-                <h1 className="text-[#FEB93C] text-[38px]">{fmt(totalUSD)}</h1>
+                <h1 className="text-[#FEB93C] text-[30px]">{fmt(totalUSD)}</h1>
               </div>
             </div>
 
@@ -175,28 +192,37 @@ export default function Page() {
                   <input type="tel" className="border border-[#ECECEC] rounded-[10px] w-full h-[50px]" />
                 </div>
 
-                <div className="flex gap-1 items-end">
-                  <h1 className="text-[#BDBDBD] mt-3 text-[24px]">Total MAD:</h1>
-                  <h1 className="text-[#FEB93C]  text-[38px]">{fmtMAD(totalMAD)}</h1>
-                </div>
+                {/* الإجمالي + الزر */}
+<div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 md:gap-6 w-full">
 
-                <div className="flex items-center gap-3">
-                  <button className="bg-[#FEB93C] w-[237px] h-[70px] rounded-full text-white text-[25px] flex items-center justify-center gap-3" onClick={handleCheckout}>
-                    Get Payed
-                    <img className="w-[39px] h-[39px]" src="sho.svg" alt="submit" />
-                  </button>
+{/* Total */}
+<div className="flex gap-1 items-end justify-center md:justify-start">
+  <h1 className="text-[#BDBDBD] mt-1 md:mt-3 text-[18px] md:text-[24px]">Total MAD:</h1>
+  <h1 className="text-[#FEB93C] text-[24px] md:text-[30px] leading-none">
+    {fmtMAD(totalMAD)}
+  </h1>
+</div>
 
-                  {/* Optional small input to adjust conversion without visual changes */}
-                  <input
-                    aria-label="USD to MAD"
-                    title="USD→MAD"
-                    type="number"
-                    step="0.01"
-                    value={usdToMad}
-                    onChange={(e) => setUsdToMad(Math.max(0, Number(e.target.value) || 0))}
-                    className="border border-[#ECECEC] rounded-[10px] w-[120px] h-[50px] px-2"
-                  />
-                </div>
+{/* زر الأداء */}
+<div className="flex items-center justify-center md:justify-end">
+  <button
+    onClick={handleCheckout}
+    className="
+      bg-[#FEB93C] text-white rounded-full
+      w-full sm:w-[280px] md:w-[237px]
+      h-[56px] md:h-[70px]
+      text-[18px] md:text-[25px]
+      flex items-center justify-center gap-3
+      transition-all hover:opacity-90 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[#FEB93C]/40
+    "
+    aria-label="Proceed to payment"
+  >
+    Get Paid
+    <img className="w-[28px] h-[28px] md:w-[39px] md:h-[39px]" src="/sho.svg" alt="" />
+  </button>
+</div>
+</div>
+                  
               </div>
             </div>
           </div>

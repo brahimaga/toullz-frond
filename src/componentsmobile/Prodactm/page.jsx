@@ -535,7 +535,7 @@ function ProductCard({ product, isFirst, baseURL }) {
               <div className="border-t border-gray-100 pt-4 px-4">
                 <div className="flex justify-between font-medium mt-2">
                   <span className="text-[24px] text-[#BDBDBD]">Total MAD:</span>
-                  <span className="text-[#FEB93C] text-[40px]">{total.toFixed(2)}</span>
+                  <span className="text-[#FEB93C]  text-[20px]">{total.toFixed(2)}</span>
                 </div>
               </div>
 
