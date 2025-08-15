@@ -190,108 +190,101 @@ function ProductCard({ product, isFirst, baseURL }) {
   const availableColors = [...new Set(product.variants.map(v => v.color?.hex))].filter(Boolean);
 
   return (
-    <div className={`${isFirst ? 'pt-0 md:pt-0' : 'pt-4 md:pt-10'}`}>
-  {/* Product Card Main Content */}
-  <div className="relative">
-    {/* Navigation buttons */}
-    <div className="absolute flex gap-2 bottom-4 mb-[100px] left-[70px] transform -translate-x-1/2 z-10 md:ml-5 md:mt-[100px] md:left-0 md:translate-x-0">
-      <button
-        onClick={handlePrev}
-        className="bg-[#F5F5F5] rounded-full w-[55px] h-[55px] md:w-[74px] md:h-[74px] flex items-center justify-center shadow-sm hover:bg-gray-50 transition-colors"
-      >
+    <div className="pt-4 md:pt-4">
+      {/* Product Card Main Content */}
+      <div className="relative">
+        {/* Navigation buttons */}
+        <div className="absolute flex gap-2 bottom-[100px] left-[70px] transform -translate-x-1/2 z-10">
+          <button
+            onClick={handlePrev}
+            className="bg-[#F5F5F5] rounded-full w-[55px] h-[55px] flex items-center justify-center shadow-sm hover:bg-gray-50 transition-colors"
+          >
+            <img
+              src="/phone/yasar.svg"
+              alt="previous"
+              className="w-6"
+              onError={(e) => { e.currentTarget.src = '/placeholder-image.jpg'; }}
+            />
+          </button>
+          <button
+            onClick={handleNext}
+            className="bg-[#F5F5F5] rounded-full w-[55px] h-[55px] flex items-center justify-center shadow-sm hover:bg-gray-50 transition-colors"
+          >
+            <img
+              src="/phone/yamin.svg"
+              alt="next"
+              className="w-6"
+              onError={(e) => { e.currentTarget.src = '/placeholder-image.jpg'; }}
+            />
+          </button>
+        </div>
+  
+        {/* Favorite button */}
+        <button className="absolute w-[55px] h-[55px] right-9 top-[30px] flex flex-col gap-2">
+          <img
+            src="/phone/icona.svg"
+            alt="favorite"
+            onError={(e) => { e.currentTarget.src = '/placeholder-image.jpg'; }}
+          />
+        </button>
+  
+        {/* Main product image */}
         <img
-          src="/phone/yasar.svg"
-          alt="previous"
-          className="w-6 md:w-[30px]"
-          onError={(e) => {
-            e.currentTarget.src = '/placeholder-image.jpg';
-          }}
+          src={currentImage}
+          alt={product.title}
+          className="w-full rounded-2xl p-2 cursor-pointer hover:opacity-95 transition-opacity"
+          onClick={() => setShadowOverlay(true)}
+          onError={(e) => { e.currentTarget.src = '/placeholder-image.jpg'; }}
+          loading="lazy"
         />
-      </button>
-      <button
-        onClick={handleNext}
-        className="bordr-[#F5F5F5] rounded-full w-[55px] h-[55px] md:w-[74px] md:h-[74px] flex items-center justify-center shadow-sm hover:bg-gray-50 transition-colors"
-      >
-        <img
-          src="/phone/yamin.svg"
-          alt="next"
-          className="w-6 md:w-[30px]"
-          onError={(e) => {
-            e.currentTarget.src = '/placeholder-image.jpg';
-          }}
-        />
-      </button>
-    </div>
-
-    {/* Favorite button */}
-    <button className="absolute w-[55px] h-[55px] right-9 top-[30px] md:right-9 md:top-[40px] flex flex-col gap-2">
-      <img
-        src="/phone/icona.svg"
-        alt="favorite"
-        onError={(e) => {
-          e.currentTarget.src = '/placeholder-image.jpg';
-        }}
-      />
-    </button>
-
-    {/* Main product image */}
-    <img
-      src={currentImage}
-      alt={product.title}
-      className="w-full rounded-2xl md:rounded-3xl p-1 md:p-2 cursor-pointer hover:opacity-95 transition-opacity"
-      onClick={() => setShadowOverlay(true)}
-      onError={(e) => {
-        e.currentTarget.src = '/placeholder-image.jpg';
-      }}
-      loading="lazy"
-    />
-
-    {/* Promo badge */}
-    {product.promo && (
-      <div className="absolute left-[20px] top-[60%] md:ml-[20px] md:top-[440px] w-20 h-8 md:w-[108px] md:h-[42px] bg-[#FEB93C] flex items-center justify-center px-2 py-1 md:px-3 rounded-full">
-        <span className="text-white text-sm md:text-[24px] font-medium">
-          {product.promo}
-        </span>
+  
+        {/* Promo badge */}
+        {product.promo && (
+          <div className="absolute left-[20px] top-[60%] w-20 h-8 bg-[#FEB93C] flex items-center justify-center px-2 py-1 rounded-full">
+            <span className="text-white text-sm font-medium">{product.promo}</span>
+          </div>
+        )}
+  
+        {/* Add to cart button */}
+        <button
+          onClick={handleAddToCart}
+          className="absolute right-5 top-[50%] cursor-pointer hover:scale-105 transition-transform w-[70px] h-[69px]"
+        >
+          <img
+            src="/phone/shop.svg"
+            alt="Add to cart"
+            className="w-full h-full"
+            onError={(e) => { e.currentTarget.src = '/placeholder-image.jpg'; }}
+          />
+        </button>
+  
+        {/* Plus button */}
+        <button
+          onClick={handleAddToCart}
+          className="absolute bg-white w-[55px] h-[55px] rounded-full right-5 top-[40%] flex items-center justify-center text-lg font-bold"
+        >
+          +
+        </button>
+  
+        {/* Product info */}
+        <div className="px-2 mt-[100px]">
+          <div className="text-xl text-black font-medium">
+            {product.price}{' '}
+            <span className="line-through text-gray-400 text-sm ml-2">
+              {product.oldPrice}
+            </span>
+          </div>
+          <div className="text-base text-[#878787] mt-1">
+            <div>{product.title}</div>
+            <div>{product.subtitle}</div>
+          </div>
+        </div>
       </div>
-    )}
+  
 
-    {/* Add to cart button */}
-    <button
-      onClick={handleAddToCart}
-      className="absolute right-3 mr-[10px] top-[57%] md:right-4 md:top-[400px] cursor-pointer hover:scale-105 transition-transform w-[70px] h-[69px] md:w-[70px] md:h-[69px]"
-    >
-      <img
-        src="/phone/shop.svg"
-        alt="Add to cart"
-        className="w-full h-full"
-        onError={(e) => {
-          e.currentTarget.src = '/placeholder-image.jpg';
-        }}
-      />
-    </button>
 
-    {/* Plus button - now adds to cart */}
-    <button
-      onClick={handleAddToCart}
-      className="absolute  bg-white w-[55px] h-[55px] mr-[20px] md:w-[55px] md:h-[55px] rounded-full right-2 top-[47%] md:right-4 md:top-[260px]   flex items-center justify-center text-lg md:text-xl font-bold"
-    >
-      +
-    </button>
 
-    {/* Product info */}
-    <div className="px-2 mt-[100px] md:mt-[150px]">
-      <div className="text-xl md:text-3xl text-black font-medium">
-        {product.price}{' '}
-        <span className="line-through text-gray-400 text-sm md:text-xl ml-2">
-          {product.oldPrice}
-        </span>
-      </div>
-      <div className="text-base md:text-[27px] text-[#878787] mt-1">
-        <div>{product.title}</div>
-        <div>{product.subtitle}</div>
-      </div>
-    </div>
-  </div>
+
 
 
       {/* Expanded Product View Overlay */}
