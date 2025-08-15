@@ -9,15 +9,15 @@ export default function Page() {
 
   // ==== Cart State (demo) ====
   const [items, setItems] = useState([
-    { id: 1, title: 'Interior Product GYT', price: 39.0, qty: 1, img: '/placeholder-1.png' },
-    { id: 2, title: 'Interior Product GYT', price: 39.0, qty: 2, img: '/placeholder-2.png' },
-    { id: 3, title: 'Interior Product GYT', price: 39.0, qty: 1, img: '/placeholder-3.png' },
-    { id: 4, title: 'Interior Product GYT', price: 39.0, qty: 1, img: '/placeholder-4.png' },
+    { id: 1, title: 'Interior Product GYT', price: 39.0, qty: 1, img: '/test.jpg' },
+    { id: 2, title: 'Interior Product GYT', price: 39.0, qty: 2, img: '/test.jpg' },
+    { id: 3, title: 'Interior Product GYT', price: 39.0, qty: 1, img: '/test.jpg' },
+    { id: 4, title: 'Interior Product GYT', price: 39.0, qty: 1, img: '/test.jpg' },
   ]);
 
   const cartCount = useMemo(() => items.reduce((s, it) => s + it.qty, 0), [items]);
   const subTotal = useMemo(() => items.reduce((s, it) => s + it.qty * it.price, 0), [items]);
-  const shipping = useMemo(() => (subTotal > 0 ? 6.99 : 0), [subTotal]); // مثال ثابت
+  const shipping = useMemo(() => (subTotal > 0 ? 6.99 : 0), [subTotal]); 
   const total = useMemo(() => subTotal + shipping, [subTotal, shipping]);
 
   const fmtUSD = (n) =>
@@ -164,7 +164,7 @@ export default function Page() {
                       id="phone"
                       className="border border-[#E0E0E0] w-[300px] h-[48px] md:h-[59px] rounded-full px-4"
                       type="tel"
-                      placeholder="+212 6 .. .. .. .."
+                      placeholder="+212xxxxxxx"
                     />
                   </div>
                 </div>
@@ -182,7 +182,9 @@ export default function Page() {
                   </div>
 
                   <button className="bg-[#FEB93C] w-[220px] md:w-[252px] h-[60px] md:h-[79px] flex items-center justify-center text-[18px] md:text-[24px] text-white rounded-full">
+
                     Get Payed
+                    <img src="/shopp.svg" alt="" />
                   </button>
                 </div>
               </div>
@@ -210,7 +212,7 @@ export default function Page() {
                         <div className="flex-1 space-y-2 md:space-y-3">
                           <div className="flex gap-2">
                             <button
-                              className="rounded-md border px-2 py-1 text-xs"
+                              className=" px-2 py-1 text-xs"
                               title="Edit"
                               aria-label="Edit"
                             >
@@ -218,7 +220,7 @@ export default function Page() {
                             </button>
                             <button
                               onClick={() => removeItem(it.id)}
-                              className="rounded-md border px-2 py-1 text-xs"
+                              className=" px-2 py-1 text-xs"
                               title="Delete"
                               aria-label="Delete"
                             >
